@@ -222,17 +222,17 @@ require('../views/template/navbar.php');
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form method="POST" action="../controller/H_creerAcheteurController.php">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="nom" placeholder="Nom">
+                                    <input type="text" class="form-control" id="nom" name="H_nomAcheteur" placeholder="Nom">
                                     <label for="nom">Nom *</label>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="prenom" placeholder="Prénom">
+                                    <input type="text" class="form-control" id="prenom" name="H_prenomAcheteur" placeholder="Prénom">
                                     <label for="prenom">Prénom *</label>
                                 </div>
                             </div>
@@ -240,7 +240,7 @@ require('../views/template/navbar.php');
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-floating">
-                                    <select class="form-select" id="typeDocument">
+                                    <select class="form-select" id="typeDocument" name="H_typeDoc">
                                         <option value="cni">CNI</option>
                                         <option value="passeport">Passeport</option>
                                     </select>
@@ -249,7 +249,7 @@ require('../views/template/navbar.php');
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="numeroDocument" placeholder="Numéro">
+                                    <input type="text" class="form-control" id="numeroDocument" name="H_numDoc" placeholder="Numéro">
                                     <label for="numeroDocument">Numéro de document *</label>
                                 </div>
                             </div>
@@ -257,13 +257,13 @@ require('../views/template/navbar.php');
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-floating">
-                                    <input type="number" class="form-control" id="age" placeholder="Âge">
-                                    <label for="age">Âge *</label>
+                                    <input type="date" class="form-control" id="age" name="H_dateNais" placeholder="Âge">
+                                    <label for="age">Date de Naissance *</label>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-floating">
-                                    <input type="tel" class="form-control" id="telephone" placeholder="Téléphone">
+                                    <input type="tel" class="form-control" id="telephone" name="H_telephoneAchteur" placeholder="Téléphone">
                                     <label for="telephone">Téléphone</label>
                                 </div>
                             </div>
@@ -271,52 +271,76 @@ require('../views/template/navbar.php');
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-floating">
-                                    <select class="form-select" id="site">
-                                        <option value="">Sélectionner un site</option>
-                                        <option value="site-a">Site A</option>
-                                        <option value="site-b">Site B</option>
-                                        <option value="site-c">Site C</option>
-                                    </select>
-                                    <label for="site">Site *</label>
+                                    <input type="text" class="form-control" id="H_adresseAcheteur" name="H_adresseAcheteur" placeholder="Adresse">
+                                    <label for="H_adresseAcheteur">Adresse de l'acheteur *</label>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-floating">
-                                    <select class="form-select" id="bloc">
-                                        <option value="">Sélectionner un bloc</option>
-                                        <option value="bloc-1">Bloc 1</option>
-                                        <option value="bloc-2">Bloc 2</option>
-                                        <option value="bloc-3">Bloc 3</option>
+                                    <select class="form-select" id="H_commercial" name="H_commercial">
+                                        <?php foreach ($H_executeEmployes as $employe) { ?>
+                                            <option value="<?= $employe->nomEmploye ?>"><?= $employe->nomEmploye ?></option>
+                                        <?php } ?>
                                     </select>
-                                    <label for="bloc">Bloc *</label>
+                                    <label for="H_commercial">Nom du commercial *</label> 
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-floating">
-                                    <input type="number" class="form-control" id="superficie" placeholder="Superficie">
+                                    <select class="form-select" id="site" name="H_site">
+                                        <?php foreach ($H_executeSites as $site) { ?>
+                                            <option value="<?= $site->numeroTitreFoncier ?>"><?= $site->numeroTitreFoncier ?></option>
+                                        <?php } ?>
+                                    </select>
+                                    <label for="site">Sélectionner un site *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="bloc" name="H_bloc">
+                                        <?php foreach ($H_executeBloc as $bloc) { ?>
+                                            <option value="<?= $bloc->idBloc ?>"><?= $bloc->nomBloc ?></option>
+                                        <?php } ?>
+                                    </select>
+                                    <label for="bloc">Sélectionner un bloc *</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="superficie" name="H_superficie" placeholder="Superficie">
                                     <label for="superficie">Superficie (m²) *</label>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-floating">
-                                    <input type="number" class="form-control" id="prixMetre" placeholder="Prix par mètre">
-                                    <label for="prixMetre">Prix par m² (FCFA) *</label>
+                                    <input type="number" class="form-control" id="prixMetre" name="H_prixMetreCarre" placeholder="Prix par mètre">
+                                    <label for="prixMetre">Prix par m² (FCFA) *</label> 
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <div class="form-floating">
-                                <textarea class="form-control" id="notes" style="height: 100px" placeholder="Notes"></textarea>
-                                <label for="notes">Notes</label>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="H_montantVersement" name="H_montantVersement" placeholder="Montant du versement">
+                                    <label for="H_montantVersement">Montant du versement (FCFA)*</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="notes" name="H_notes" style="height: 100px" placeholder="Notes"></textarea>
+                                    <label for="notes">Notes</label>
+                                </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary bg-primary-green border-0">Enregistrer</button>
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal" name="Annuler">Annuler</button>
+                    <button type="submit" class="btn btn-primary bg-primary-green border-0" name="Enregistrer">Enregistrer</button>
                 </div>
             </div>
         </div>
