@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : lun. 28 juil. 2025 à 15:00
--- Version du serveur : 10.4.32-MariaDB
--- Version de PHP : 8.2.12
+-- Host: 127.0.0.1
+-- Generation Time: Jul 30, 2025 at 11:54 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `fodjomanage`
+-- Database: `fodjomanage`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `acheteur`
+-- Table structure for table `acheteur`
 --
 
 CREATE TABLE `acheteur` (
@@ -36,21 +36,22 @@ CREATE TABLE `acheteur` (
   `numeroCNI` varchar(50) NOT NULL,
   `dateNaisAcheteur` date NOT NULL,
   `nomCommercial` varchar(50) NOT NULL,
+  `notesAcheteur` text DEFAULT NULL,
   `dateCreateAcheteur` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `acheteur`
+-- Dumping data for table `acheteur`
 --
 
-INSERT INTO `acheteur` (`idAcheteur`, `idEmploye`, `nomAcheteur`, `adresseAcheteur`, `telephoneAcheteur`, `numeroCNI`, `dateNaisAcheteur`, `nomCommercial`, `dateCreateAcheteur`) VALUES
-('ACH00001', 'EMP00001', 'lorent', 'Douala, yassa', '671234561', 'LTS098B43KV34', '1993-09-06', 'yves', '2025-07-23 14:30:27'),
-('ACH00002', 'EMP00001', 'flaure', 'Bonamoussadi', '674328017', 'LTS018B43MT00', '2004-03-10', 'yves', '2025-07-23 14:33:31');
+INSERT INTO `acheteur` (`idAcheteur`, `idEmploye`, `nomAcheteur`, `adresseAcheteur`, `telephoneAcheteur`, `numeroCNI`, `dateNaisAcheteur`, `nomCommercial`, `notesAcheteur`, `dateCreateAcheteur`) VALUES
+('ACH00001', 'EMP00001', 'lorent', 'Douala, yassa', '671234561', 'LTS098B43KV34', '1993-09-06', 'yves', NULL, '2025-07-23 14:30:27'),
+('ACH00002', 'EMP00001', 'flaure', 'Bonamoussadi', '674328017', 'LTS018B43MT00', '2004-03-10', 'yves', NULL, '2025-07-23 14:33:31');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `blocs`
+-- Table structure for table `blocs`
 --
 
 CREATE TABLE `blocs` (
@@ -64,7 +65,7 @@ CREATE TABLE `blocs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `blocs`
+-- Dumping data for table `blocs`
 --
 
 INSERT INTO `blocs` (`idBloc`, `numeroTitreFoncier`, `nomBloc`, `superficieinitialBloc`, `superficieCourranteBloc`, `statutBloc`, `dateCreateBloc`) VALUES
@@ -77,7 +78,7 @@ INSERT INTO `blocs` (`idBloc`, `numeroTitreFoncier`, `nomBloc`, `superficieiniti
 -- --------------------------------------------------------
 
 --
--- Structure de la table `clientsdescente`
+-- Table structure for table `clientsdescente`
 --
 
 CREATE TABLE `clientsdescente` (
@@ -93,7 +94,7 @@ CREATE TABLE `clientsdescente` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `descentes`
+-- Table structure for table `descentes`
 --
 
 CREATE TABLE `descentes` (
@@ -107,7 +108,7 @@ CREATE TABLE `descentes` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `dossiers`
+-- Table structure for table `dossiers`
 --
 
 CREATE TABLE `dossiers` (
@@ -125,7 +126,7 @@ CREATE TABLE `dossiers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `dossiers`
+-- Dumping data for table `dossiers`
 --
 
 INSERT INTO `dossiers` (`idDossier`, `numeroProcesVerbal`, `numeroDossierTech`, `numeroDocAcquisition`, `dateProcesVerbal`, `dateDossierTech`, `dateDocAcquisition`, `dateCreateDossier`, `dateMiseAJour`, `idEmploye`, `idAcheteur`) VALUES
@@ -135,7 +136,7 @@ INSERT INTO `dossiers` (`idDossier`, `numeroProcesVerbal`, `numeroDossierTech`, 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `employe`
+-- Table structure for table `employe`
 --
 
 CREATE TABLE `employe` (
@@ -151,7 +152,7 @@ CREATE TABLE `employe` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `employe`
+-- Dumping data for table `employe`
 --
 
 INSERT INTO `employe` (`idEmploye`, `idTypeEmploye`, `nomEmploye`, `pseudoEmploye`, `adresseEmploye`, `dateNaisEmploye`, `telephoneEmploye`, `mdpEmploye`, `dateCreateEmploye`) VALUES
@@ -160,7 +161,7 @@ INSERT INTO `employe` (`idEmploye`, `idTypeEmploye`, `nomEmploye`, `pseudoEmploy
 -- --------------------------------------------------------
 
 --
--- Structure de la table `employesprivileges`
+-- Table structure for table `employesprivileges`
 --
 
 CREATE TABLE `employesprivileges` (
@@ -170,27 +171,31 @@ CREATE TABLE `employesprivileges` (
   `dateCreateEmployePrivilege` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `employesprivileges`
+--
+
+INSERT INTO `employesprivileges` (`idEmp_Pri`, `idEmploye`, `idPrivilege`, `dateCreateEmployePrivilege`) VALUES
+('EPP00001', 'EMP00001', 'PRI00001', '2025-07-30 09:46:23'),
+('EPP00002', 'EMP00001', 'PRI00002', '2025-07-30 09:46:23'),
+('EPP00003', 'EMP00001', 'PRI00003', '2025-07-30 09:46:23'),
+('EPP00004', 'EMP00001', 'PRI00004', '2025-07-30 09:46:23'),
+('EPP00005', 'EMP00001', 'PRI00005', '2025-07-30 09:46:23'),
+('EPP00006', 'EMP00001', 'PRI00006', '2025-07-30 09:46:23'),
+('EPP00007', 'EMP00001', 'PRI00007', '2025-07-30 09:46:23'),
+('EPP00008', 'EMP00001', 'PRI00008', '2025-07-30 09:46:23'),
+('EPP00009', 'EMP00001', 'PRI00009', '2025-07-30 09:46:23'),
+('EPP00010', 'EMP00001', 'PRI00010', '2025-07-30 09:46:23'),
+('EPP00011', 'EMP00001', 'PRI00011', '2025-07-30 09:46:23'),
+('EPP00012', 'EMP00001', 'PRI00012', '2025-07-30 09:46:23'),
+('EPP00013', 'EMP00001', 'PRI00013', '2025-07-30 09:46:23'),
+('EPP00014', 'EMP00001', 'PRI00014', '2025-07-30 09:46:23'),
+('EPP00015', 'EMP00001', 'PRI00015', '2025-07-30 09:46:23');
+
 -- --------------------------------------------------------
--- Déchargement des données de la table `employesprivileges`
-INSERT INTO `employesprivileges` (`idEmp_Pri`, `idEmploye`, `idPrivilege`, `dateCreateEmployePrivilege`)
-VALUES ('EPP00001', 'EMP00001', 'PRI00001', NOW()),
-        ('EPP00002', 'EMP00001', 'PRI00002', NOW()),
-        ('EPP00003', 'EMP00001', 'PRI00003', NOW()),
-        ('EPP00004', 'EMP00001', 'PRI00004', NOW()),
-        ('EPP00005', 'EMP00001', 'PRI00005', NOW()),
-        ('EPP00006', 'EMP00001', 'PRI00006', NOW()),
-        ('EPP00007', 'EMP00001', 'PRI00007', NOW()),
-        ('EPP00008', 'EMP00001', 'PRI00008', NOW()),
-        ('EPP00009', 'EMP00001', 'PRI00009', NOW()),
-        ('EPP00010', 'EMP00001', 'PRI00010', NOW()),
-        ('EPP00011', 'EMP00001', 'PRI00011', NOW()),
-        ('EPP00012', 'EMP00001', 'PRI00012', NOW()),
-        ('EPP00013', 'EMP00001', 'PRI00013', NOW()),
-        ('EPP00014', 'EMP00001', 'PRI00014', NOW()),
-        ('EPP00015', 'EMP00001', 'PRI00015', NOW());
 
 --
--- Structure de la table `privileges`
+-- Table structure for table `privileges`
 --
 
 CREATE TABLE `privileges` (
@@ -199,25 +204,31 @@ CREATE TABLE `privileges` (
   `dateCreatePrivilege` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-INSERT INTO `privileges`(`idPrivilege`, `libellePrivilege`, `dateCreatePrivilege`)
-VALUES ('PRI00001', 'Ajouter un employé', NOW()),
-        ('PRI00002', 'Enregistrer un prospect', NOW()),
-        ('PRI00003', 'Enregistrer un Client', NOW()),
-        ('PRI00004', 'Enregistrer un Acheteur', NOW()),
-        ('PRI00005', 'Consulter le dashboard', NOW()),
-        ('PRI00006', 'Ajouter un site', NOW()),
-        ('PRI00007', 'Modifier un site', NOW()),
-        ('PRI00008', 'Ajouter une seletion', NOW()),
-        ('PRI00009', 'Enregistrer un versement', NOW()),
-        ('PRI00010', 'Modifier un versment', NOW()),
-        ('PRI00011', 'Creer un Dossier', NOW()),
-        ('PRI00012', 'Modifier un Dossier', NOW()),
-        ('PRI00013', 'Programmer une descente', NOW()),
-        ('PRI00014', 'Deprogrammer une descente', NOW()),
-        ('PRI00015', 'Modifier une descente', NOW());
 --
--- Structure de la table `prospects`
+-- Dumping data for table `privileges`
+--
+
+INSERT INTO `privileges` (`idPrivilege`, `libellePrivilege`, `dateCreatePrivilege`) VALUES
+('PRI00001', 'Ajouter un employé', '2025-07-30 09:46:23'),
+('PRI00002', 'Enregistrer un prospect', '2025-07-30 09:46:23'),
+('PRI00003', 'Enregistrer un Client', '2025-07-30 09:46:23'),
+('PRI00004', 'Enregistrer un Acheteur', '2025-07-30 09:46:23'),
+('PRI00005', 'Consulter le dashboard', '2025-07-30 09:46:23'),
+('PRI00006', 'Ajouter un site', '2025-07-30 09:46:23'),
+('PRI00007', 'Modifier un site', '2025-07-30 09:46:23'),
+('PRI00008', 'Ajouter une seletion', '2025-07-30 09:46:23'),
+('PRI00009', 'Enregistrer un versement', '2025-07-30 09:46:23'),
+('PRI00010', 'Modifier un versment', '2025-07-30 09:46:23'),
+('PRI00011', 'Creer un Dossier', '2025-07-30 09:46:23'),
+('PRI00012', 'Modifier un Dossier', '2025-07-30 09:46:23'),
+('PRI00013', 'Programmer une descente', '2025-07-30 09:46:23'),
+('PRI00014', 'Deprogrammer une descente', '2025-07-30 09:46:23'),
+('PRI00015', 'Modifier une descente', '2025-07-30 09:46:23');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `prospects`
 --
 
 CREATE TABLE `prospects` (
@@ -232,7 +243,7 @@ CREATE TABLE `prospects` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `recasement`
+-- Table structure for table `recasement`
 --
 
 CREATE TABLE `recasement` (
@@ -246,7 +257,7 @@ CREATE TABLE `recasement` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `selection`
+-- Table structure for table `selection`
 --
 
 CREATE TABLE `selection` (
@@ -262,7 +273,7 @@ CREATE TABLE `selection` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `selection`
+-- Dumping data for table `selection`
 --
 
 INSERT INTO `selection` (`idSelection`, `superficieSelection`, `lot`, `montantParMetre`, `montantTotalSelection`, `idEmploye`, `idBloc`, `idAcheteur`, `dateCreateSelection`) VALUES
@@ -272,7 +283,7 @@ INSERT INTO `selection` (`idSelection`, `superficieSelection`, `lot`, `montantPa
 -- --------------------------------------------------------
 
 --
--- Structure de la table `sites`
+-- Table structure for table `sites`
 --
 
 CREATE TABLE `sites` (
@@ -286,7 +297,7 @@ CREATE TABLE `sites` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `sites`
+-- Dumping data for table `sites`
 --
 
 INSERT INTO `sites` (`numeroTitreFoncier`, `localisationSite`, `superficieInitialeSite`, `superficieCourranteSite`, `prix_Vente`, `statut`, `dateCreateSite`) VALUES
@@ -297,7 +308,7 @@ INSERT INTO `sites` (`numeroTitreFoncier`, `localisationSite`, `superficieInitia
 -- --------------------------------------------------------
 
 --
--- Structure de la table `transactions`
+-- Table structure for table `transactions`
 --
 
 CREATE TABLE `transactions` (
@@ -312,7 +323,7 @@ CREATE TABLE `transactions` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `typeemploye`
+-- Table structure for table `typeemploye`
 --
 
 CREATE TABLE `typeemploye` (
@@ -322,7 +333,7 @@ CREATE TABLE `typeemploye` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `typeemploye`
+-- Dumping data for table `typeemploye`
 --
 
 INSERT INTO `typeemploye` (`idTypeEmploye`, `libelleFonction`, `dateCreateTypeEmploye`) VALUES
@@ -331,7 +342,7 @@ INSERT INTO `typeemploye` (`idTypeEmploye`, `libelleFonction`, `dateCreateTypeEm
 -- --------------------------------------------------------
 
 --
--- Structure de la table `versements`
+-- Table structure for table `versements`
 --
 
 CREATE TABLE `versements` (
@@ -346,25 +357,25 @@ CREATE TABLE `versements` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Index pour les tables déchargées
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `acheteur`
+-- Indexes for table `acheteur`
 --
 ALTER TABLE `acheteur`
   ADD PRIMARY KEY (`idAcheteur`),
   ADD KEY `idEmploye` (`idEmploye`);
 
 --
--- Index pour la table `blocs`
+-- Indexes for table `blocs`
 --
 ALTER TABLE `blocs`
   ADD PRIMARY KEY (`idBloc`),
   ADD KEY `numeroTitreFoncier` (`numeroTitreFoncier`);
 
 --
--- Index pour la table `clientsdescente`
+-- Indexes for table `clientsdescente`
 --
 ALTER TABLE `clientsdescente`
   ADD PRIMARY KEY (`idClient`),
@@ -372,14 +383,14 @@ ALTER TABLE `clientsdescente`
   ADD KEY `idEmploye` (`idEmploye`);
 
 --
--- Index pour la table `descentes`
+-- Indexes for table `descentes`
 --
 ALTER TABLE `descentes`
   ADD PRIMARY KEY (`idDescente`),
   ADD KEY `idEmploye` (`idEmploye`);
 
 --
--- Index pour la table `dossiers`
+-- Indexes for table `dossiers`
 --
 ALTER TABLE `dossiers`
   ADD PRIMARY KEY (`idDossier`),
@@ -387,14 +398,14 @@ ALTER TABLE `dossiers`
   ADD KEY `idAcheteur` (`idAcheteur`);
 
 --
--- Index pour la table `employe`
+-- Indexes for table `employe`
 --
 ALTER TABLE `employe`
   ADD PRIMARY KEY (`idEmploye`),
   ADD KEY `idTypeEmploye` (`idTypeEmploye`);
 
 --
--- Index pour la table `employesprivileges`
+-- Indexes for table `employesprivileges`
 --
 ALTER TABLE `employesprivileges`
   ADD PRIMARY KEY (`idEmp_Pri`),
@@ -402,26 +413,26 @@ ALTER TABLE `employesprivileges`
   ADD KEY `idPrivilege` (`idPrivilege`);
 
 --
--- Index pour la table `privileges`
+-- Indexes for table `privileges`
 --
 ALTER TABLE `privileges`
   ADD PRIMARY KEY (`idPrivilege`);
 
 --
--- Index pour la table `prospects`
+-- Indexes for table `prospects`
 --
 ALTER TABLE `prospects`
   ADD PRIMARY KEY (`idProspect`),
   ADD KEY `idEmploye` (`idEmploye`);
 
 --
--- Index pour la table `recasement`
+-- Indexes for table `recasement`
 --
 ALTER TABLE `recasement`
   ADD PRIMARY KEY (`id_recasement`);
 
 --
--- Index pour la table `selection`
+-- Indexes for table `selection`
 --
 ALTER TABLE `selection`
   ADD PRIMARY KEY (`idSelection`),
@@ -430,13 +441,13 @@ ALTER TABLE `selection`
   ADD KEY `idAcheteur` (`idAcheteur`);
 
 --
--- Index pour la table `sites`
+-- Indexes for table `sites`
 --
 ALTER TABLE `sites`
   ADD PRIMARY KEY (`numeroTitreFoncier`);
 
 --
--- Index pour la table `transactions`
+-- Indexes for table `transactions`
 --
 ALTER TABLE `transactions`
   ADD PRIMARY KEY (`idTransaction`),
@@ -444,13 +455,13 @@ ALTER TABLE `transactions`
   ADD KEY `idEmploye` (`idEmploye`);
 
 --
--- Index pour la table `typeemploye`
+-- Indexes for table `typeemploye`
 --
 ALTER TABLE `typeemploye`
   ADD PRIMARY KEY (`idTypeEmploye`);
 
 --
--- Index pour la table `versements`
+-- Indexes for table `versements`
 --
 ALTER TABLE `versements`
   ADD PRIMARY KEY (`idVersement`),
@@ -458,62 +469,62 @@ ALTER TABLE `versements`
   ADD KEY `idAcheteur` (`idAcheteur`);
 
 --
--- Contraintes pour les tables déchargées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `acheteur`
+-- Constraints for table `acheteur`
 --
 ALTER TABLE `acheteur`
   ADD CONSTRAINT `acheteur_ibfk_1` FOREIGN KEY (`idEmploye`) REFERENCES `employe` (`idEmploye`);
 
 --
--- Contraintes pour la table `blocs`
+-- Constraints for table `blocs`
 --
 ALTER TABLE `blocs`
   ADD CONSTRAINT `blocs_ibfk_1` FOREIGN KEY (`numeroTitreFoncier`) REFERENCES `sites` (`numeroTitreFoncier`);
 
 --
--- Contraintes pour la table `clientsdescente`
+-- Constraints for table `clientsdescente`
 --
 ALTER TABLE `clientsdescente`
   ADD CONSTRAINT `clientsdescente_ibfk_1` FOREIGN KEY (`idProspect`) REFERENCES `prospects` (`idProspect`),
   ADD CONSTRAINT `clientsdescente_ibfk_2` FOREIGN KEY (`idEmploye`) REFERENCES `employe` (`idEmploye`);
 
 --
--- Contraintes pour la table `descentes`
+-- Constraints for table `descentes`
 --
 ALTER TABLE `descentes`
   ADD CONSTRAINT `descentes_ibfk_1` FOREIGN KEY (`idEmploye`) REFERENCES `employe` (`idEmploye`);
 
 --
--- Contraintes pour la table `dossiers`
+-- Constraints for table `dossiers`
 --
 ALTER TABLE `dossiers`
   ADD CONSTRAINT `dossiers_ibfk_1` FOREIGN KEY (`idEmploye`) REFERENCES `employe` (`idEmploye`),
   ADD CONSTRAINT `dossiers_ibfk_2` FOREIGN KEY (`idAcheteur`) REFERENCES `acheteur` (`idAcheteur`);
 
 --
--- Contraintes pour la table `employe`
+-- Constraints for table `employe`
 --
 ALTER TABLE `employe`
   ADD CONSTRAINT `employe_ibfk_1` FOREIGN KEY (`idTypeEmploye`) REFERENCES `typeemploye` (`idTypeEmploye`);
 
 --
--- Contraintes pour la table `employesprivileges`
+-- Constraints for table `employesprivileges`
 --
 ALTER TABLE `employesprivileges`
   ADD CONSTRAINT `employesprivileges_ibfk_1` FOREIGN KEY (`idEmploye`) REFERENCES `employe` (`idEmploye`),
   ADD CONSTRAINT `employesprivileges_ibfk_2` FOREIGN KEY (`idPrivilege`) REFERENCES `privileges` (`idPrivilege`);
 
 --
--- Contraintes pour la table `prospects`
+-- Constraints for table `prospects`
 --
 ALTER TABLE `prospects`
   ADD CONSTRAINT `prospects_ibfk_1` FOREIGN KEY (`idEmploye`) REFERENCES `employe` (`idEmploye`);
 
 --
--- Contraintes pour la table `selection`
+-- Constraints for table `selection`
 --
 ALTER TABLE `selection`
   ADD CONSTRAINT `selection_ibfk_1` FOREIGN KEY (`idAcheteur`) REFERENCES `acheteur` (`idAcheteur`),
@@ -521,14 +532,14 @@ ALTER TABLE `selection`
   ADD CONSTRAINT `selection_ibfk_3` FOREIGN KEY (`idBloc`) REFERENCES `blocs` (`idBloc`);
 
 --
--- Contraintes pour la table `transactions`
+-- Constraints for table `transactions`
 --
 ALTER TABLE `transactions`
   ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`idVersement`) REFERENCES `versements` (`idVersement`),
   ADD CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`idEmploye`) REFERENCES `employe` (`idEmploye`);
 
 --
--- Contraintes pour la table `versements`
+-- Constraints for table `versements`
 --
 ALTER TABLE `versements`
   ADD CONSTRAINT `versements_ibfk_1` FOREIGN KEY (`idSelection`) REFERENCES `selection` (`idSelection`),
