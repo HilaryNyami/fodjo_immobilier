@@ -61,13 +61,11 @@
                                                             //recuperation de l'id de l'employe qui enregistre l' Acheteur
                                                             $H_idEmploye = $_SESSION['H_idEmploye'];
 
-                                                            var_dump([$H_notesAcheteur]);
-                                                            // , , $, $, , $, $, $H_notesAcheteur]);
-                                                            exit;
-                                                            // $H_insertAcheteur = 'INSERT INTO acheteur (idAcheteur, idEmploye, nomAcheteur, adresseAcheteur, telephoneAcheteur`, `numeroCNI`, `dateNaisAcheteur`, `nomCommercial`, `notesAcheteur`, `dateCreateAcheteur`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())';
-                                                            // $H_tableauParametres = [$H_newIdAcheteur, $H_idEmploye, strtoupper($H_nomAcheteur)." ".strtoupper($H_prenomAcheteur), $H_adresseAcheteur, $H_telephoneAchteur, $H_numDoc, , $H_dateNais, $H_commercial, $H_notesAcheteur];
-                                                           
-                                                            // $H_executeInsertAcheteur = F_executeRequeteSql($H_insertAcheteur, $H_tableauParametres); //ajoute le nouveau Acheteur pour la descente
+                                                            //var_dump([$H_notesAcheteur]);
+                                                            //exit;
+                                                            $H_insertAcheteur = 'INSERT INTO acheteur (idAcheteur, idEmploye, nomAcheteur, adresseAcheteur, telephoneAcheteur`, `numeroCNI`, `dateNaisAcheteur`, `nomCommercial`, `notesAcheteur`, `dateCreateAcheteur`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())';
+                                                            $H_tableauParametres = [$H_newIdAcheteur, $H_idEmploye, strtoupper($H_nomAcheteur)." ".strtoupper($H_prenomAcheteur), $H_adresseAcheteur, $H_telephoneAchteur, $H_numDoc, , $H_dateNais, $H_commercial, $H_notesAcheteur];
+                                                            $H_executeInsertAcheteur = F_executeRequeteSql($H_insertAcheteur, $H_tableauParametres); //ajoute le nouveau Acheteur pour la descente
                                                             $H_tableauErreurs[] = 'Nouvel Acheteur enregistré avec success!!!';
     
                                                             // ---------------------------------------------------- Dans la table selection ------------------------------------------
