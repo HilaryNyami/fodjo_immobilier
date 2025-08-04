@@ -3,7 +3,6 @@ require('../views/template/header.php');
 require('../views/template/navbar.php');
 ?>
 
-            <!-- Main content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2 text-primary-blue">Acheteurs</h1>
@@ -15,7 +14,6 @@ require('../views/template/navbar.php');
                     </div>
                 </div>
 
-                <!-- Search and Filter -->
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <div class="input-group">
@@ -41,84 +39,19 @@ require('../views/template/navbar.php');
                     </div>
                 </div>
 
-                <!-- Acheteurs Cards -->
-                <div class="row">
-                    <?php 
-                        foreach ($Y_executeAcheteurs as $acheteur) {
-                            $_SESSION['H_idAcheteur'] = $acheteur->idAcheteur;
-                    ?>
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="card h-100 shadow-sm">
-                            <div class="card-header bg-primary-green text-white d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0"><?= $acheteur->nomAcheteur ?></h6>
-                                <span class="badge bg-light text-dark">Actif</span>
-                            </div>
-                            <div class="card-body">
-                                <div class="row mb-2">
-                                    <div class="col-sm-4"><strong>CNI:</strong></div>
-                                    <div class="col-sm-8"><?= $acheteur->nomAcheteur ?></div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-sm-4"><strong>Âge:</strong></div>
-                                    <div class="col-sm-8"><?= F_calculerAge($acheteur->dateNaisAcheteur) ?> ans</div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-sm-4"><strong>Site:</strong></div>
-                                    <div class="col-sm-8"><?= $acheteur->numeroTitreFoncier ?> - <?= $acheteur->nomBloc ?></div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-sm-4"><strong>Superficie:</strong></div>
-                                    <div class="col-sm-8"><?= number_format($acheteur->superficieSelection, 0, '', ' ') ?> m²</div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-sm-4"><strong>Prix/m²:</strong></div>
-                                    <div class="col-sm-8"><?= number_format($acheteur->montantParMetre, 0, '', ' ') ?> FCFA</div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-sm-4"><strong>Total:</strong></div>
-                                    <div class="col-sm-8"><strong class="text-success"><?= number_format($acheteur->montantTotalSelection, 0, '', ' ') ?> FCFA</strong></div>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <div class="btn-group w-100" role="group">
-                                    <a href="Y_acheteurDetailController.php<?='?H_idEmploye='.$_SESSION['H_idEmploye']?><?='&Y_idAcheteur='.$_SESSION['H_idAcheteur']?>" class="btn btn-outline-primary btn-sm">
-                                        <i class="bi bi-eye"></i> Voir
-                                    </a>
-                                    <button type="button" class="btn btn-outline-success btn-sm">
-                                        <i class="bi bi-folder"></i> Dossier
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm">
-                                        <i class="bi bi-pencil"></i> Modifier
-                                    </button>
-                                </div>
-                            </div>
+                <div class="row" id="acheteurs-cards-container">
+                    <div id="no-items-message" class="col-12 text-center text-muted">
                         </div>
-                    </div>
-                    <?php 
-                        } //Fin foreach
-                    ?>
-
                 </div>
 
-                <!-- Pagination -->
                 <nav aria-label="Page navigation" class="mt-4">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Précédent</a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Suivant</a>
-                        </li>
-                    </ul>
+                    <ul class="pagination justify-content-center" id="pagination-controls">
+                        </ul>
                 </nav>
             </main>
         </div>
     </div>
 
-    <!-- Add Acheteur Modal -->
     <div class="modal fade" id="addAcheteurModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -251,11 +184,15 @@ require('../views/template/navbar.php');
         </div>
     </div>
 
-    <!-- Floating Action Button -->
     <button class="btn btn-primary bg-primary-green border-0 btn-floating d-md-none" data-bs-toggle="modal" data-bs-target="#addAcheteurModal">
         <i class="bi bi-plus" style="font-size: 1.5rem;"></i>
     </button>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        const allItems = <?php echo $json_items; ?>;
+    </script>
+    <script src="../views/assets/js/paginationAcheteurs.js"></script>
 </body>
 </html>

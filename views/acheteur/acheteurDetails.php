@@ -449,7 +449,7 @@
 </div>
 
 <!-- Formulaire Caché Pour Envoyer les données-->
-<form id="formCNI" method="post" action="Y_acheteurDetailController.php?Y_idAcheteur=<?= $Y_idAcheteur ?>" style="display:none;">
+<form id="formCNI" method="post" action="Y_acheteurDetailController.php<?='?H_idEmploye='.$_SESSION['H_idEmploye']?><?='&Y_idAcheteur='.$Y_idAcheteur ?>" style="display:none;">
     <input type="hidden" name="numeroCNI" id="inputNumeroCNI" value="<?= htmlspecialchars($Y_executeAcheteurDetail->numeroCNI) ?>">
 </form>
 

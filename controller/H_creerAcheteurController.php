@@ -25,7 +25,7 @@
             if(isset($_POST['Enregistrer'])) //si le user clique sur le btn enregistrer
             {
                 extract($_POST); //extraction du contenu du tableau $_POST
-                $H_tableauValeurs = array($H_nomAcheteur, $H_prenomAcheteur, $H_typeDoc, $H_numDoc,  $H_dateNais, $H_telephoneAchteur, $H_adresseAcheteur, $H_site, $H_bloc, $H_superficie, $H_prixMetreCarre, $H_commercial, $H_montantVersement);
+                $H_tableauValeurs = array($H_nomAcheteur, $H_prenomAcheteur, $H_typeDoc, $H_numDoc,  $H_dateNais, $H_telephoneAchteur, $H_adresseAcheteur, $H_site, $H_bloc, $H_superficie, $H_prixMetreCarre, $H_commercial, $H_montantVersement, $H_notesAcheteur);
                 //var_dump($_POST);
         
                     if(F_exclureChampsVide($H_tableauValeurs) == true) //verifie si tous les champs sont remplis
@@ -38,7 +38,7 @@
                                 {
                                   if (mb_strlen($H_numDoc) == 9 || mb_strlen($H_numDoc) == 6 || mb_strlen($H_numDoc) == 12)
                                             {
-                                                var_dump($H_tableauValeurs);
+                                               // var_dump($H_tableauValeurs);
 
                                                     $H_executeGetSupCourrante = F_executeRequeteSql($H_getSupCourrante, [$H_bloc]);
                                                     if($H_superficie <= $H_executeGetSupCourrante->superficieCourranteBloc)
@@ -61,10 +61,10 @@
                                                             //recuperation de l'id de l'employe qui enregistre l' Acheteur
                                                             $H_idEmploye = $_SESSION['H_idEmploye'];
 
-                                                            //var_dump([$H_notesAcheteur]);
-                                                            //exit;
-                                                            $H_insertAcheteur = 'INSERT INTO acheteur (idAcheteur, idEmploye, nomAcheteur, adresseAcheteur, telephoneAcheteur`, `numeroCNI`, `dateNaisAcheteur`, `nomCommercial`, `notesAcheteur`, `dateCreateAcheteur`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())';
-                                                            $H_tableauParametres = [$H_newIdAcheteur, $H_idEmploye, strtoupper($H_nomAcheteur)." ".strtoupper($H_prenomAcheteur), $H_adresseAcheteur, $H_telephoneAchteur, $H_numDoc, , $H_dateNais, $H_commercial, $H_notesAcheteur];
+                                                            // var_dump(array($H_newIdAcheteur, $H_idEmploye, strtoupper($H_nomAcheteur)." ".strtoupper($H_prenomAcheteur), $H_adresseAcheteur, $H_telephoneAchteur, $H_numDoc, , $H_dateNais, $H_commercial, $H_notesAcheteur));
+                                                            // exit;
+                                                            $H_insertAcheteur = 'INSERT INTO acheteur (idAcheteur, idEmploye, nomAcheteur, adresseAcheteur, telephoneAcheteur, numeroCNI, dateNaisAcheteur, nomCommercial, notesAcheteur, dateCreateAcheteur) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())';
+                                                            $H_tableauParametres = [$H_newIdAcheteur, $H_idEmploye, strtoupper($H_nomAcheteur)." ".strtoupper($H_prenomAcheteur), $H_adresseAcheteur, $H_telephoneAchteur, $H_numDoc, $H_dateNais, $H_commercial, $H_notesAcheteur];
                                                             $H_executeInsertAcheteur = F_executeRequeteSql($H_insertAcheteur, $H_tableauParametres); //ajoute le nouveau Acheteur pour la descente
                                                             $H_tableauErreurs[] = 'Nouvel Acheteur enregistré avec success!!!';
     
@@ -140,7 +140,7 @@
     
                                                             $H_updateSite = "UPDATE blocs, sites SET superficieCourranteSite  = superficieCourranteSite -? WHERE blocs.numeroTitreFoncier = sites.numeroTitreFoncier AND blocs.idBloc = ?";
                                                             $H_executeUpdateSite = F_executeRequeteSql($H_updateSite, [$H_superficie, $H_bloc]);
-                                                            header('Location:'.$_SESSION ['url'].'/controllers/Y_acheteurController.php?H_idEmploye='.$H_idEmploye);
+                                                            header('Location:../controller/Y_acheteurController.php?H_idEmploye='.$H_idEmploye);
                                                         
                                                         }
                                                         else

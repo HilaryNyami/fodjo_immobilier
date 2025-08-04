@@ -1,19 +1,34 @@
 <?php
 session_start();
 $currentPage = basename($_SERVER['PHP_SELF']); 
-//var_dump($_SESSION ['url']);
 
-// 1. Connexion à la BD (comme dans votre exemple)
+// 1. Connexion à la BD
 require_once('../models/H_databaseConnection.php');
 $H_dbConnect = F_databaseConnection("localhost", "fodjomanage", "root", "");
 
-//**********appel du fichier des fonctions creer ************ */
+// Appel du fichier des fonctions du modèle
 require("../models/H_functionsModels.php");
 
-// 2. selection des acheteurs et leurs selection
+// 2. Sélection de TOUS les acheteurs et leurs sélections
+// Assurez-vous que cette requête retourne TOUS les enregistrements, sans LIMIT/OFFSET.
 $Y_executeAcheteurs = F_executeRequeteSql("SELECT * FROM acheteur INNER JOIN selection ON acheteur.idAcheteur = selection.idAcheteur INNER JOIN blocs ON selection.idBloc = blocs.idBloc INNER JOIN sites ON blocs.numeroTitreFoncier = sites.numeroTitreFoncier");
+
+// Ajoutez un check pour s'assurer que les données sont bien un tableau (ou un objet traversable)
+if (!is_array($Y_executeAcheteurs) && !($Y_executeAcheteurs instanceof Traversable)) {
+    $Y_executeAcheteurs = []; // Initialisez comme un tableau vide pour éviter les erreurs si la requête échoue
+}
+
+// Convertissez TOUS les acheteurs en JSON pour le JavaScript
+$json_items = json_encode($Y_executeAcheteurs);
+
+// 3. Sélection des autres données (blocs, sites, employés)
+// Ces données sont généralement moins nombreuses et peuvent être passées directement comme avant
 $H_executeBloc = F_executeRequeteSql("SELECT * FROM blocs ");
 $H_executeSites = F_executeRequeteSql("SELECT * FROM sites");
 $H_executeEmployes = F_executeRequeteSql("SELECT nomEmploye FROM employe");
+
+
+// 4. Inclusion de la vue
 require('../views/acheteur/acheteurView.php');
+
 ?>
