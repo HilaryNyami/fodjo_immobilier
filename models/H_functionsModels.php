@@ -400,32 +400,32 @@
     }
 
       //------------------------ desactiveboutton---------------------
-      function F_desactiveBoutton( $requet, $valeur)
-      {
-          if (empty($requet->idClient))
-          {
-              foreach ($requet as $key) {
-                 if($key->idClient==$valeur)
-                 {
-                 echo "disabled";
-                 }else
-                 {
-                  echo "";
-                 }
-              }
+    //   function F_desactiveBoutton( $requet, $valeur)
+    //   {
+    //       if (empty($requet->idClient))
+    //       {
+    //           foreach ($requet as $key) {
+    //              if($key->idClient==$valeur)
+    //              {
+    //              echo "disabled";
+    //              }else
+    //              {
+    //               echo "";
+    //              }
+    //           }
              
-          }
-          else
-          {
-              if($requet->idClient==$valeur)
-              {
-              echo "disabled";
-              }else
-              {
-               echo "";
-              } 
-          }
-      }
+    //       }
+    //       else
+    //       {
+    //           if($requet->idClient==$valeur)
+    //           {
+    //           echo "disabled";
+    //           }else
+    //           {
+    //            echo "";
+    //           } 
+    //       }
+    //   }
 
       if(!function_exists('F_gestionPrivilege'))
     {
@@ -451,6 +451,22 @@
             $dateActuelle = new DateTime();
             $age = $dateNaissance->diff($dateActuelle)->y;
             return $age;
+        }
+    }
+
+        // ---------------------------- F_encoder_L'URL ------------------------
+    if(!function_exists('F_encoder_URL'))
+    {
+        function encodeUrl($data) {
+            return rtrim(strtr(base64_encode(json_encode($data)), '+/', '-_'), '=');
+        }
+    }
+
+    // ---------------------------- F_decoder_L'URL ------------------------
+    if(!function_exists('F_decoder_URL'))
+    {
+        function decodeUrl($string) {
+            return json_decode(base64_decode(strtr($string, '-_', '+/')), true);
         }
     }
 

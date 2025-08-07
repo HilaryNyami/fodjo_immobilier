@@ -15,8 +15,9 @@
     $H_getPrixMetreCarre = "SELECT sites.prix_Vente FROM sites INNER JOIN blocs ON sites.numeroTitreFoncier = blocs.numeroTitreFoncier WHERE blocs.idBloc = ?";
     $H_getSupCourrante = "SELECT superficieCourranteBloc FROM blocs WHERE idBloc =?";
     $H_tableauErreurs = [];
-    $H_fraisOuvertureDossier = 300000;
     $H_regexTelephone = "/^(6[2]|6[5-9])([0-9]{7})/";
+    //  test
+    // $_SESSION['H_employeConnecte'] = 'connected';
 
     if(($_SESSION['H_employeConnecte']==='connected'))
     {

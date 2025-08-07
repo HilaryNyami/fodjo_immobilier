@@ -31,11 +31,13 @@ if(isset($_POST['connecter'])){
                 
         // $H_ifPrivilege = F_gestionPrivilege($_SESSION['H_idEmploye'], 'PRI00005');
         // if($H_ifPrivilege)
-            header('Location:http://localhost/FodjoManage/controller/Y_siteController.php?H_idEmploye='.$_SESSION['H_idEmploye'].'');
+            header('Location:/FodjoManage/'.encodeUrl(['page'=>'Y_site' , 'H_idEmploye'=>$_SESSION['H_idEmploye']]));
+            exit;
         // else
         //     header('Location:http://localhost/FodjoManage/controllers/H_dashboardClassicController.php?H_idEmploye='.$_SESSION['H_idEmploye'].'');
     }
 }
 
+// Affichage de la vue de connexion
 require('views/loginView.php');
 ?>

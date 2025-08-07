@@ -1,6 +1,6 @@
 <?php
-require('../views/template/header.php');
-require('../views/template/navbar.php');
+require('views/template/header.php');
+require('views/template/navbar.php');
 ?>
 
             <!-- Main content -->

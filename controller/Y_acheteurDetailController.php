@@ -3,14 +3,12 @@ session_start();
 $currentPage = basename($_SERVER['PHP_SELF']); 
 
 // 1. Connexion à la BD (comme dans votre exemple)
-require_once('../models/H_databaseConnection.php');
+require_once('models/H_databaseConnection.php');
 $H_dbConnect = F_databaseConnection("localhost", "fodjomanage", "root", "");
 
-//**********appel du fichier des fonctions creer ************ */
-require("../models/H_functionsModels.php");
 
 // 2. Récupération de l'ID de l'acheteur depuis la barre de navigation
-$Y_idAcheteur = $_GET['Y_idAcheteur']; 
+$Y_idEmployes =  $Y_urlDecoder['H_idEmploye']; 
 
 // 2. Selection des details des acheteurs
 $Y_executeAcheteurDetail = F_executeRequeteSql('SELECT * FROM dossiers INNER JOIN acheteur ON dossiers.idAcheteur = acheteur.idAcheteur INNER JOIN selection ON acheteur.idAcheteur = selection.idAcheteur INNER JOIN blocs ON selection.idBloc = blocs.idBloc INNER JOIN sites ON blocs.numeroTitreFoncier = sites.numeroTitreFoncier WHERE acheteur.idAcheteur = ?', [$Y_idAcheteur]);
@@ -23,7 +21,6 @@ $Y_executeHistoriqueTransaction = F_executeRequeteSql('SELECT * FROM transaction
 $Y_executeMontantTotal = F_executeRequeteSql('SELECT montantTotalSelection, montantVersement, idVersement FROM selection INNER JOIN versements ON selection.idSelection = versements.idSelection WHERE versements.idAcheteur = ?', [$Y_idAcheteur]);
 
 $idVersement = $Y_executeMontantTotal->idVersement ?? null;
-$Employe = 'EMP00001';
 
 // 5. Calcule du pourcentage de paiement
 $total = $Y_executeMontantTotal->montantTotalSelection ?? 0;
@@ -32,6 +29,7 @@ $pourcentage = $total > 0 ? round(($paye / $total) * 100) : 0;
 
 // 6. Enregistrer un nouveau paiement
 if (isset($_POST['Enregistrer'])){
+    $_SESSION['H_idAcheteur'] = $Y_idAcheteur;
     extract($_POST);
 
     // Verifier si le montant Total est egale au montant verse
@@ -48,7 +46,7 @@ if (isset($_POST['Enregistrer'])){
 
         // Insertion du paiement dans la base de données
         $Y_executeInsertPaiement = F_executeRequeteSql('INSERT INTO transactions (idTransaction, montantTransaction, modePaiement, dateTransaction, dateCreateTransaction, idVersement, idEmploye) VALUES (?, ?, ?, ?, NOW(), ?, ?)', 
-        [$idTransaction, $montant, $modePaiement, $dateVersement, $idVersement, $Employe]);
+        [$idTransaction, $montant, $modePaiement, $dateVersement, $idVersement, $Y_idEmployes]);
 
         // Mettre à jour le montant du versement
         $Y_executeUpdateVersement = F_executeRequeteSql('UPDATE versements SET montantVersement = montantVersement + ? WHERE idVersement = ?', 
@@ -126,5 +124,5 @@ if (isset($_GET['voirPiece']) && isset($_SESSION['cheminPieceIdentite'])) {
     $cheminPieceIdentite = $_SESSION['cheminPieceIdentite'];
 }
 
-require('../views/acheteur/acheteurDetails.php');
+require('views/acheteur/acheteurDetails.php');
 ?>

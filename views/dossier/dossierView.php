@@ -1,6 +1,6 @@
 <?php
-require('../views/template/header.php');
-require('../views/template/navbar.php');
+require('views/template/header.php');
+require('views/template/navbar.php');
 ?>
 
             <!-- Main content -->
@@ -208,7 +208,7 @@ require('../views/template/navbar.php');
         </div>
     </div>
 
-    <script>
+    <!-- <script>
         function chargerDetailsDossier(button) {
             const idDossier = button.getAttribute('data-id');
             const modalContent = document.getElementById('dossier-details-content');
@@ -220,7 +220,7 @@ require('../views/template/navbar.php');
                 </div>
             `;
 
-            fetch('../controller/Y_dossierController.php?action=getDetails&id=' + idDossier)
+            fetch('/FodjoManage/controller/Y_dossierController.php?action=getDetails&id=' + idDossier +'&H_idEmploye=<?= $_SESSION['H_idEmploye'] ?>')
                 .then(response => response.text())
                 .then(html => {
                     modalContent.innerHTML = html;
@@ -230,6 +230,38 @@ require('../views/template/navbar.php');
                     modalContent.innerHTML = `<div class="p-4 text-danger">Erreur lors du chargement des détails.</div>`;
                 });
         }
+    </script> -->
+    <script>
+        function chargerDetailsDossier(button) {
+            const idDossier = button.getAttribute('data-id');
+            const modalContent = document.getElementById('dossier-details-content');
+
+            modalContent.innerHTML = `
+                <div class="text-center p-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                </div>
+            `;
+
+            // Construction correcte de l'URL
+            const params = new URLSearchParams({
+                page: 'Y_dossier',
+                action: 'getDetails',
+                id: idDossier,
+                H_idEmploye: '<?= $_SESSION['H_idEmploye'] ?>'
+            });
+
+            fetch('/FodjoManage/controller/Y_dossierController.php?' + params.toString())
+                .then(response => response.text())
+                .then(html => {
+                    modalContent.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error("Erreur AJAX :", error);
+                    modalContent.innerHTML = `<div class="p-4 text-danger">Erreur lors du chargement des détails.</div>`;
+                });
+        }
+
+
     </script>
 
 

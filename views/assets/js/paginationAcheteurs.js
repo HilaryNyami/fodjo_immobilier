@@ -6,7 +6,7 @@ const paginationControls = document.getElementById('pagination-controls');
 const noItemsMessage = document.getElementById('no-items-message');
 
 // Pagination settings
-const itemsPerPage = 3; // Vous aviez 4 colonnes, 6 ou 9 est bien pour la mise en page
+const itemsPerPage = 6; // Vous aviez 4 colonnes, 6 ou 9 est bien pour la mise en page
 let currentPage = 1;
 
 // Fonction pour rendre les éléments de la page actuelle
@@ -70,12 +70,12 @@ function displayItems(items, wrapper, rowsPerPage, page) {
                         <a href="Y_acheteurDetailController.php?H_idEmploye=${item.idEmploye || ''}&Y_idAcheteur=${item.idAcheteur || ''}" class="btn btn-outline-primary btn-sm">
                             <i class="bi bi-eye"></i> Voir
                         </a>
-                        <button type="button" class="btn btn-outline-success btn-sm">
-                            <i class="bi bi-folder"></i> Dossier
-                        </button>
-                        <button type="button" class="btn btn-outline-secondary btn-sm">
+                        <a href="Y_dossierController.php?H_idEmploye=${item.idEmploye || ''}&Y_idAcheteur=${item.idAcheteur || ''}" class="btn btn-outline-success btn-sm">
+                            <i class="bi bi-eye"></i> Dossier
+                        </a>
+                        <a href="H_updateAcheterController.php?H_idEmploye=${item.idEmploye || ''}&Y_idAcheteur=${item.idAcheteur || ''}" class="btn btn-outline-primary btn-sm">
                             <i class="bi bi-pencil"></i> Modifier
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>

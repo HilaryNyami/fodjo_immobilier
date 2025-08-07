@@ -3,17 +3,19 @@ session_start();
 $currentPage = basename($_SERVER['PHP_SELF']); 
 
 // 1. Connexion à la BD (comme dans votre exemple)
-require_once('../models/H_databaseConnection.php');
+require_once __DIR__ . '/../models/H_databaseConnection.php';
 $H_dbConnect = F_databaseConnection("localhost", "fodjomanage", "root", "");
 
 //**********appel du fichier des fonctions creer ************ */
-require("../models/H_functionsModels.php");
+require_once __DIR__ . '/../models/H_functionsModels.php';
+
+$Y_idEmployes = $Y_urlDecoder['H_idEmploye'] ?? null; 
 
 // 2. Selection des dossiers relatives aux acheteurs
 $Y_executeDossiers = F_executeRequeteSql("SELECT * FROM dossiers INNER JOIN acheteur ON dossiers.idAcheteur = acheteur.idAcheteur INNER JOIN selection ON acheteur.idAcheteur = selection.idAcheteur INNER JOIN blocs ON selection.idBloc = blocs.idBloc INNER JOIN sites ON blocs.numeroTitreFoncier = sites.numeroTitreFoncier");
 
-$action = $_GET['action'] ?? null;
-$idDossier = $_GET['id'] ?? null; 
+$action = $_GET['action'] ?? ($Y_urlDecoder['action'] ?? null);
+$idDossier = $_GET['id'] ?? ($Y_urlDecoder['id'] ?? null);
 
 // Afficher les details des dossiers
 if ($action === 'getDetails' && $idDossier) {
@@ -136,10 +138,10 @@ if(isset($_POST['valider'])) {
         $Y_executeInsertDocAcquisition = F_executeRequeteSql($Y_insertDocAcquisition, $tableauValeursDocAcquisition);
     }
 
-    header("Location:Y_dossierController.php");
+    header('Location:/FodjoManage/'.encodeUrl(['page'=>'Y_dossier' , 'H_idEmploye'=>$_SESSION['H_idEmploye']]));
 }
 
 
 // Affichage de la vue des dossiers
-require('../views/dossier/dossierView.php');
+require('views/dossier/dossierView.php');
 ?>

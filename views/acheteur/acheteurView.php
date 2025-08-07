@@ -1,6 +1,6 @@
 <?php
-require('../views/template/header.php');
-require('../views/template/navbar.php');
+require('views/template/header.php');
+require('views/template/navbar.php');
 ?>
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -193,6 +193,6 @@ require('../views/template/navbar.php');
     <script>
         const allItems = <?php echo $json_items; ?>;
     </script>
-    <script src="../views/assets/js/paginationAcheteurs.js"></script>
+    <script src="views/assets/js/paginationAcheteurs.js"></script>
 </body>
 </html>
