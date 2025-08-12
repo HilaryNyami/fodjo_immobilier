@@ -184,7 +184,7 @@ require('Views/template/navbar.php');
                                                 <td><?=  number_format($site->superficieInitialeSite, 0, '', ' ') ?> m²</td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Superficie Initiale:</strong></td>
+                                                <td><strong>Superficie Actuel:</strong></td>
                                                 <td><?= number_format($site->superficieCourranteSite, 0, '', ' ') ?> m²</td>
                                             </tr>
                                             <tr>
@@ -241,7 +241,7 @@ require('Views/template/navbar.php');
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="Y_siteController.php">
+                    <form method="post" >
                         <div class="mb-3">
                             <div class="form-floating">
                                 <input type="text" class="form-control" name="nomSite" id="nomSite" placeholder="Nom du site" required>
@@ -294,7 +294,7 @@ require('Views/template/navbar.php');
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="Y_siteController.php">
+                    <form method="post" >
                         <div class="mb-3">
                             <div class="form-floating">
                                 <select class="form-select" name="siteBloc" id="siteBloc" required>

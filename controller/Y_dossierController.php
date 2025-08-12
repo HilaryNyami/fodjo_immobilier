@@ -138,7 +138,7 @@ if(isset($_POST['valider'])) {
         $Y_executeInsertDocAcquisition = F_executeRequeteSql($Y_insertDocAcquisition, $tableauValeursDocAcquisition);
     }
 
-    header('Location:/FodjoManage/'.encodeUrl(['page'=>'Y_dossier' , 'H_idEmploye'=>$_SESSION['H_idEmploye']]));
+    header('Location:'.contructUrl('Y_dossier' , ['H_idEmploye'=>$_SESSION['H_idEmploye']]));
 }
 
 

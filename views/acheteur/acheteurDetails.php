@@ -3,11 +3,13 @@
     require('views/template/navbar.php');
 ?>
 
+<!-- cahngement des liens et des forms(retrait des actions="" dans les form)-->
+
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <!-- Header with navigation -->
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <div class="d-flex align-items-center">
-            <a href="../controller/Y_acheteurController.php<?='?H_idEmploye='.$_SESSION['H_idEmploye']?>" class="btn btn-outline-secondary me-3">
+            <a href="<?= contructUrl('Y_acheteur' , ['H_idEmploye'=>$Y_idEmployes])?>" class="btn btn-outline-secondary me-3" >
                 <i class="bi bi-arrow-left"></i> Retour
             </a>
             <div>
@@ -17,12 +19,9 @@
         </div>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group me-2">
-                <button type="button" class="btn btn-outline-primary">
-                    <i class="bi bi-pencil me-1"></i> Modifier
-                </button>
-                <button type="button" class="btn btn-outline-success">
-                    <i class="bi bi-file-earmark-pdf me-1"></i> Contrat
-                </button>
+                <a href="<?= contructUrl('H_updateAcheter' , ['H_idEmploye'=>$Y_idEmployes, 'Y_idAcheteur'=>$Y_idAcheteur])?>" class="btn btn-outline-primary me-3" >
+                    <i class="bi bi-pencil"></i> Modifier
+                </a>
                 <button type="button" class="btn btn-outline-info">
                     <i class="bi bi-printer me-1"></i> Imprimer
                 </button>
@@ -177,7 +176,7 @@
                         }elseif (empty($Y_executeHistoriqueTransaction->idVersement)) {            
                             foreach ($Y_executeHistoriqueTransaction as $paiement) {
                                 $compte = 1;
-                                $compte += 1;
+                                
                         ?>
                         <div class="payment-item">
                             <div class="payment-date">
@@ -201,11 +200,17 @@
                                         <span class="badge bg-success">
                                             Payé
                                         </span>
+                                        <form method="post" action="">
+                                            <!-- bouton facture avec la class facture-btn -->
+                                            <button type="submit" name="facture" value="<?= $paiement->idTransaction ?>" class="btn btn-outline-primary btn-sm mt-2">
+                                                <i class="bi bi-file-earmark-pdf me-1"></i> Facture
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <?php } }else{?>
+                        <?php $compte += 1;} }else{?>
                         <div class="payment-item">
                             <div class="payment-date">
                                 <span class="day"><?= date('d', strtotime($Y_executeHistoriqueTransaction->dateTransaction)) ?></span>
@@ -225,9 +230,16 @@
                                         <div class="payment-amount">
                                             <?= number_format($Y_executeHistoriqueTransaction->montantTransaction, 0, '', ' ') ?>
                                         </div>
-                                        <span class="badge <?='STATUS-PAIEMENT'?>">
-                                            <?= 'STATUS-PAIEMENT' ?>
+                                        <div></div>
+                                        <span class="badge bg-success">
+                                            Payé
                                         </span>
+                                        <form method="post">
+                                            <!-- bouton facture avec la class facture-btn -->
+                                            <button type="submit" name="facture" value='<?= $Y_executeHistoriqueTransaction->idTransaction ?>' class="btn btn-outline-primary btn-sm mt-2">
+                                                <i class="bi bi-file-earmark-pdf me-1"></i> Facture
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -449,7 +461,7 @@
 </div>
 
 <!-- Formulaire Caché Pour Envoyer les données-->
-<form id="formCNI" method="post" action="Y_acheteurDetailController.php<?='?H_idEmploye='.$_SESSION['H_idEmploye']?><?='&Y_idAcheteur='.$Y_idAcheteur ?>" style="display:none;">
+<form id="formCNI" method="post">
     <input type="hidden" name="numeroCNI" id="inputNumeroCNI" value="<?= htmlspecialchars($Y_executeAcheteurDetail->numeroCNI) ?>">
 </form>
 

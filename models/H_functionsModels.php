@@ -455,7 +455,7 @@
     }
 
         // ---------------------------- F_encoder_L'URL ------------------------
-    if(!function_exists('F_encoder_URL'))
+    if(!function_exists('encoder_URL'))
     {
         function encodeUrl($data) {
             return rtrim(strtr(base64_encode(json_encode($data)), '+/', '-_'), '=');
@@ -463,17 +463,43 @@
     }
 
     // ---------------------------- F_decoder_L'URL ------------------------
-    if(!function_exists('F_decoder_URL'))
+    if(!function_exists('decoder_URL'))
     {
         function decodeUrl($string) {
             return json_decode(base64_decode(strtr($string, '-_', '+/')), true);
         }
     }
 
-    
-    // if( F_gestionPrivilege('EMP00001', 'PRI00004'))
-    //     echo "eric le cool".F_gestionPrivilege('EMP00001', 'PRI00004');
-    // else
-    //     echo "hilary la bete";
+    // ---------------------------F_ContruireUrl -----------------------------
+    if(!function_exists('contructUrl')){
+        function contructUrl($page, $params = []) {
+            $encodedParams = '';
+            if (!empty($params)) {
+                $encodedParams = encodeUrl($params);
+            }
+            return "/FodjoManage/$page/$encodedParams";
+        }
+    }
+
+
+    // ---------------------------- F_generatePassword ------------------------
+    if(!function_exists('F_generatePassword'))
+    {
+        function F_generatePassword($length = 10) 
+        {
+            // Définir les caractères a utiliser pour générer le mot de passe
+            $charsAllowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
+            
+            $password = '';
+            
+            // Générez une chaîne de caractères aléatoire
+            for ($i = 0; $i < $length; $i++) {
+                // Piquez un caractère aléatoire dans la chaîne
+                $password .= $charsAllowed[rand(0, strlen($charsAllowed) - 1)];
+            }
+            return $password;
+        }
+    }
+
 ?>
  

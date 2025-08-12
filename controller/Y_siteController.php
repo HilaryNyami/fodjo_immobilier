@@ -24,7 +24,8 @@ if (isset($_POST['creer_Site'])) {
         $Y_insertSite = "INSERT INTO sites (numeroTitreFoncier, localisationSite, superficieInitialeSite, superficieCourranteSite, prix_Vente, dateCreateSite) VALUES (?, ?, ?, ?, ?, NOW())";
         $tableauValeurs = [$nomSite, $localisation, $superficie, $superficie, $prixMoyen];
         $Y_excuteInsertSite = F_executeRequeteSql($Y_insertSite, $tableauValeurs);
-        header("Location:Y_siteController.php");
+        header('Location:'.contructUrl('Y_site' , ['H_idEmploye'=>$_SESSION['H_idEmploye']]));
+        exit;
     }
 }
 
@@ -47,7 +48,8 @@ if (isset($_POST['enregistrer'])) {
         $Y_insertBloc = "INSERT INTO blocs (idBloc, nomBloc, superficieinitialBloc, superficieCourranteBloc, numeroTitreFoncier, dateCreateBloc) VALUES (?, ?, ?, ?, ?, NOW())";
         $tableauValeurs = [$nouvelleIdBloc, $numeroBloc, $superficieBloc, $superficieBloc, $siteBloc];
         $Y_excuteInsertBloc = F_executeRequeteSql($Y_insertBloc, $tableauValeurs);
-        header("Location:Y_siteController.php");
+        header('Location:'.contructUrl('Y_site' , ['H_idEmploye'=>$_SESSION['H_idEmploye']]));
+        exit;
 
 }
 

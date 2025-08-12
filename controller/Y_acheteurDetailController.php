@@ -6,6 +6,15 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 require_once('models/H_databaseConnection.php');
 $H_dbConnect = F_databaseConnection("localhost", "fodjomanage", "root", "");
 
+// Changement principale sur les liens et variables recu par l'url(ce qui suit)
+// Revue de l'insertion des des versements et l'ajout du champ modePaiement dans la table transactions
+// Recuperer l'URL décodée
+$Y_idEmployes = $Y_urlDecoder['H_idEmploye']; 
+$Y_idAcheteur = $Y_urlDecoder['Y_idAcheteur'];
+
+$voirPiece = $Y_urlDecoder['voirPiece'] ?? null;
+
+
 
 // 2. Récupération de l'ID de l'acheteur depuis la barre de navigation
 $Y_idEmployes =  $Y_urlDecoder['H_idEmploye']; 
@@ -13,9 +22,12 @@ $Y_idEmployes =  $Y_urlDecoder['H_idEmploye'];
 // 2. Selection des details des acheteurs
 $Y_executeAcheteurDetail = F_executeRequeteSql('SELECT * FROM dossiers INNER JOIN acheteur ON dossiers.idAcheteur = acheteur.idAcheteur INNER JOIN selection ON acheteur.idAcheteur = selection.idAcheteur INNER JOIN blocs ON selection.idBloc = blocs.idBloc INNER JOIN sites ON blocs.numeroTitreFoncier = sites.numeroTitreFoncier WHERE acheteur.idAcheteur = ?', [$Y_idAcheteur]);
 $dateNaisssance = date('d/m/Y', strtotime($Y_executeAcheteurDetail->dateNaisAcheteur));
+
+
 //var_dump($Y_idAcheteur);
 // 3. Afficher l'historique de transaction de l'acheteur
 $Y_executeHistoriqueTransaction = F_executeRequeteSql('SELECT * FROM transactions INNER JOIN versements ON transactions.idVersement = versements.idVersement WHERE idAcheteur = ?', [$Y_idAcheteur]);
+
 
 // 4. Afficher le montant Total a payer, le montant verse, le montant restant
 $Y_executeMontantTotal = F_executeRequeteSql('SELECT montantTotalSelection, montantVersement, idVersement FROM selection INNER JOIN versements ON selection.idSelection = versements.idSelection WHERE versements.idAcheteur = ?', [$Y_idAcheteur]);
@@ -53,7 +65,7 @@ if (isset($_POST['Enregistrer'])){
         [$montant, $idVersement]);
 
         // Redirection vers la page de détails de l'acheteur
-        header("Location: Y_acheteurDetailController.php?H_idEmploye=".$_SESSION['H_idEmploye']."&Y_idAcheteur=".$Y_idAcheteur);
+        header('Location:'.contructUrl('Y_acheteurDetail' , ['H_idEmploye'=>$_SESSION['H_idEmploye'], 'Y_idAcheteur'=>$Y_idAcheteur]));
         exit;
     } else {
         $errorMessage = "Somme Total Atteint";
@@ -88,23 +100,24 @@ if (isset($_POST['telecharger'])) {
             $newFilename = $telecharger . '.' . $ext;
 
             // Vérification si le fichier existe déjà
-            if(file_exists("../images" . $newFilename)) {
-                echo $newFilename . " est déjà existant.";
+            if(file_exists("/images" . $newFilename)) {
+                move_uploaded_file($_FILES["photo"]["tmp_name"], "images/" . $newFilename);
+                $cheminPieceIdentite = "images/".$numeroCNI .".jpg";
             } else {
                 // Déplacement du fichier vers le dossier images
-                move_uploaded_file($_FILES["photo"]["tmp_name"], "../images/" . $newFilename);
+                move_uploaded_file($_FILES["photo"]["tmp_name"], "images/" . $newFilename);
                 echo "Votre fichier a été téléchargé avec succès.".' noms:'.$newFilename;
                     // Insertion dans la base de données
                     // $Y_executeInsertPieceIdentite = F_executeRequeteSql('INSERT INTO piece_identite (idAcheteur, nomPieceIdentite, typePieceIdentite) VALUES (?, ?, ?)', 
                     // [$Y_idAcheteur, $newFilename, $typePieceIdentite]);
-                $cheminPieceIdentite = "../images/".$numeroCNI .".jpg";
+                $cheminPieceIdentite = "images/".$numeroCNI .".jpg";
             }
         }
     }else {
        echo "Erreur : " . $_FILES["photo"]["error"];
     }
     // Redirection vers la page de détails de l'acheteur
-    header("Location: Y_acheteurDetailController.php?H_idEmploye=".$_SESSION['H_idEmploye']."&Y_idAcheteur=".$Y_idAcheteur);
+    header('Location:'.contructUrl('Y_acheteurDetail' , ['H_idEmploye'=>$_SESSION['H_idEmploye'], 'Y_idAcheteur'=>$Y_idAcheteur]));
     exit;
 }
 
@@ -114,15 +127,104 @@ if (isset($_POST['numeroCNI'])) {
     
     // stocker le chemein de la pièce d'identité dans une variable
     $_SESSION['cheminPieceIdentite'] = "../images/".$numeroCNI .".jpg";
-    header("Location: Y_acheteurDetailController.php?H_idEmploye=".$_SESSION['H_idEmploye']."&Y_idAcheteur=".$Y_idAcheteur."&voirPiece=1");
+    // header("Location: Y_acheteurDetailController.php?H_idEmploye=".$_SESSION['H_idEmploye']."&Y_idAcheteur=".$Y_idAcheteur."&voirPiece=1");
+    header('Location:'.contructUrl('Y_acheteurDetail' , ['H_idEmploye'=>$_SESSION['H_idEmploye'], 'Y_idAcheteur'=>$Y_idAcheteur, 'voirPiece'=>1]));
     exit;
 
 }
 
 // 9. Recuperer ce chemin Vers l'Image de la pièce d'identité dans la session
-if (isset($_GET['voirPiece']) && isset($_SESSION['cheminPieceIdentite'])) {
+if (isset($voirPiece) && isset($_SESSION['cheminPieceIdentite'])) {
     $cheminPieceIdentite = $_SESSION['cheminPieceIdentite'];
 }
+
+// Facturation et versement
+if (isset($_POST['facture'])) {
+    extract($_POST);
+
+    // Récupérer la date de la facture
+    $voirTout = F_executeRequeteSql("SELECT dateCreateTransaction FROM transactions WHERE transactions.idTransaction = ?", [$facture]);
+    // var_dump($voirTout);
+    // die("ok");
+
+    $Y_executeHistoriqueTransaction2 = F_executeRequeteSql('SELECT * FROM transactions INNER JOIN versements ON transactions.idVersement = versements.idVersement WHERE idTransaction = ?', [$facture]);
+
+    $time = $voirTout->dateCreateTransaction;
+    $timestamp = strtotime($time);
+
+    // Faire la somme des versement du client aveant la date $time
+    $SommeVersement = F_executeRequeteSql("SELECT SUM(montantTransaction) AS total FROM transactions WHERE idVersement = ? AND dateCreateTransaction <= ?", [$idVersement, $time]);
+    $amounts = $SommeVersement->total;
+
+    // Reste a payer
+    if($amounts==00000)
+    $reste = $Y_executeMontantTotal->montantTotalSelection ;
+    else
+    $reste = ($Y_executeMontantTotal->montantTotalSelection) - ($amounts);
+    
+
+    require('models/pdf/fpdf.php');
+    $dimension = array(28, 21);
+    $pdf = new FPDF('P','cm', $dimension);
+
+    $pdf->AddPage();
+    $pdf->Image("images/now-logo.png",1,1,4,2);
+    $pdf->Image("images/now-logo.png",1,0.5,21,21);
+
+    $pdf->SetFont('Arial','I',14);
+    $pdf->Cell(16,1,'',0,0);
+    $pdf->Cell(1,1,$facture,0,0);
+    
+    $pdf->SetFont('Arial','',10);
+    $pdf->ln(4);
+    $pdf->Cell(5,1,'Nom du Client',0,0);
+    $pdf->Cell(6,1,':'.' '.$Y_executeAcheteurDetail->nomAcheteur,0,0);
+    $pdf->Cell(3,1,'CNI',0,0);
+    $pdf->Cell(3,1,':'.' '.$Y_executeAcheteurDetail->numeroCNI,0,1);
+
+    $pdf->Cell(5,1,'A PAYER',0,0);
+    $pdf->Cell(6,1,':'.' '.number_format($Y_executeAcheteurDetail->montantTotalSelection, 0, ',', ' ').' XAF',0,0);
+    $pdf->Cell(3,1,'PAYE',0,0);
+    $pdf->Cell(5,1,':'.' '.number_format($Y_executeHistoriqueTransaction2->montantVersement, 0, ',', ' ').' XAF',0,1);
+    $pdf->Cell(5,1,'RECEPTIONER PAR',0,0);
+    $pdf->Cell(6,1,': Caisse',0,0);
+    $pdf->Cell(3,1,'BENEFICIARE',0,0);
+    $pdf->Cell(4,1,':'.' '.$Y_executeAcheteurDetail->nomAcheteur,0,1);
+
+  
+    $pdf->Cell(5,1,'SITE',0,0);
+    $pdf->Cell(6,1,':'.' '.$Y_executeAcheteurDetail->numeroTitreFoncier .' '.$Y_executeAcheteurDetail->nomBloc,0,0);
+    $pdf->Cell(3,1,'DATE',0,0);
+    $pdf->Cell(5,1,':'.' '.date('d F Y', $timestamp),0,1);
+    $pdf->Cell(5,1,'RESTE',0,0);
+    $pdf->Cell(6,1,':'.' '.number_format($reste, 0, ',', ' ').' XAF',0,0);
+    $pdf->Cell(3,1,'MOTIF',0,0);
+    $pdf->Cell(4,1,':'.' payee',0,1);
+    $pdf->Cell(5,1,'SUPERFICIE',0,0);
+    $pdf->Cell(6,1,':'.' '.number_format($Y_executeAcheteurDetail->superficieSelection, 0, ',', ' ').' m2',0,0);
+    $pdf->Cell(3,1,'Tel',0,0);
+    $pdf->Cell(5,1,':'.' '.$Y_executeAcheteurDetail->telephoneAcheteur,0,1);
+
+
+    $pdf->SetFont('Arial','',8);
+    $pdf->ln(1);
+    $pdf->Cell(19,1,'Avec CB Wonder votre satisfaction nous oblige. Aucune possibilite de ',0,1,'C');
+    $pdf->Cell(19,1,'remboursement mais votre recasement est assure en cas de soucis sans frais supplementaire',0,1,'C');
+
+    $pdf->SetFont('Arial','',12);
+    $pdf->ln(1);
+    $pdf->Cell(5,1,'Signature Client',0,0);
+    $pdf->Cell(4,1,'',0,0);
+    $pdf->Cell(5,1,'',0,0);
+    $pdf->Cell(5,1,'Signature Administration ',0,1);
+
+
+    $pdf->Output();
+
+    $connexion->close();
+
+}
+
 
 require('views/acheteur/acheteurDetails.php');
 ?>

@@ -8,17 +8,23 @@ $H_dbConnect = F_databaseConnection("localhost", "fodjomanage", "root", "");
 require("models/H_functionsModels.php");
 
 // 2. Recuperer L'url apres le nom des domaine et prendre la derniere partie
-$Y_url = explode('/', trim($_SERVER['REQUEST_URI'],'/'))[1];
+$Y_url = trim($_SERVER['REQUEST_URI'], '/');
+
+$segments = explode('/', $Y_url);
 
 // 3. Decoder l'URL et charger la page correspondante
-if (!empty($Y_url)) {
+if (count($segments) >= 3) {
 
-    // Fonction pour décoder l'URL
-    $Y_urlDecoder = decodeUrl($Y_url);
+    array_shift($segments); // supprime FodjoManage
+    $page = $segments[0];       // nom du contrôleur
+    $encodedParams = $segments[1] ?? '';  // paramètres encodés
 
-    // Verifie si la page existe et a bien été envoyée
-    if (isset($Y_urlDecoder['page'])) {
-        $Y_pageController = $Y_urlDecoder['page'] . 'Controller.php';
+    $params = [];
+    if ($encodedParams)
+        // Fonction pour décoder l'URL
+        $Y_urlDecoder = decodeUrl($encodedParams);
+
+        $Y_pageController = $page . 'Controller.php';
 
         if(file_exists("controller/$Y_pageController")){
             require("controller/$Y_pageController");
@@ -26,6 +32,5 @@ if (!empty($Y_url)) {
             echo "Page Introuvable";
         }
 
-    }
 }
 ?>

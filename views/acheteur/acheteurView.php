@@ -46,7 +46,7 @@ require('views/template/navbar.php');
 
                 <nav aria-label="Page navigation" class="mt-4">
                     <ul class="pagination justify-content-center" id="pagination-controls">
-                        </ul>
+                    </ul>
                 </nav>
             </main>
         </div>
@@ -60,7 +60,7 @@ require('views/template/navbar.php');
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="../controller/H_creerAcheteurController.php?H_idEmploye=<?=$_SESSION['H_idEmploye']?>">
+                    <form method="POST" action="<?= contructUrl('H_creerAcheteur' , ['H_idEmploye'=>$_SESSION['H_idEmploye']]) ?> ">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-floating">
@@ -193,6 +193,6 @@ require('views/template/navbar.php');
     <script>
         const allItems = <?php echo $json_items; ?>;
     </script>
-    <script src="views/assets/js/paginationAcheteurs.js"></script>
+    <script src="../views/assets/js/paginationAcheteurs.js"></script>
 </body>
 </html>

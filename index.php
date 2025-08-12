@@ -31,7 +31,20 @@ if(isset($_POST['connecter'])){
                 
         // $H_ifPrivilege = F_gestionPrivilege($_SESSION['H_idEmploye'], 'PRI00005');
         // if($H_ifPrivilege)
-            header('Location:/FodjoManage/'.encodeUrl(['page'=>'Y_site' , 'H_idEmploye'=>$_SESSION['H_idEmploye']]));
+        // Tableau complet
+            $params = ['page'=>'Y_site', 'H_idEmploye'=>$_SESSION['H_idEmploye']];
+
+            // Extraire la page
+            $page = $params['page'];
+            unset($params['page']); // enlève la page des params à encoder
+
+            // Encoder les autres params
+            $encodedParams = encodeUrl($params);
+
+            // Construire l'URL
+            $url = "/FodjoManage/$page/$encodedParams";
+
+            header('Location:'. $url);
             exit;
         // else
         //     header('Location:http://localhost/FodjoManage/controllers/H_dashboardClassicController.php?H_idEmploye='.$_SESSION['H_idEmploye'].'');

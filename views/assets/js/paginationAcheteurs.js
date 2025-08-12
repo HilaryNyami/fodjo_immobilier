@@ -9,6 +9,25 @@ const noItemsMessage = document.getElementById('no-items-message');
 const itemsPerPage = 6; // Vous aviez 4 colonnes, 6 ou 9 est bien pour la mise en page
 let currentPage = 1;
 
+
+// Equivalent de la function PHP pour construire l'URL encodée
+// Ici ont encode les paramètres de la page en Base64 et les formate pour l'URL
+function buildEncodedLink(page, params = {}) {
+    let encodedParams = '';
+    if (Object.keys(params).length > 0) {
+        const jsonStr = JSON.stringify(params);
+        encodedParams = btoa(jsonStr)
+            .replace(/\+/g, '-')
+            .replace(/\//g, '_')
+            .replace(/=+$/, '');
+    }
+    return `/FodjoManage/${page}/${encodedParams}`;
+}
+
+
+
+
+
 // Fonction pour rendre les éléments de la page actuelle
 function displayItems(items, wrapper, rowsPerPage, page) {
     wrapper.innerHTML = ''; // Efface les éléments existants
@@ -26,6 +45,29 @@ function displayItems(items, wrapper, rowsPerPage, page) {
     }
 
     paginatedItems.forEach(item => {
+        // Construire les URLs pour les detil des acheteurs
+        // Utilisez la fonction buildEncodedLink pour créer les liens encodés
+        // on stock le resultat dans une variable 
+        const detailUrl = buildEncodedLink('Y_acheteurDetail', {
+            H_idEmploye: item.idEmploye || '',
+            Y_idAcheteur: item.idAcheteur || ''
+        });
+
+
+        // Construire l'URL pour le dossier
+        // on stock le resultat dans une variable 
+        const dossierUrl = buildEncodedLink('Y_dossier', {
+            H_idEmploye: item.idEmploye || '',
+            Y_idAcheteur: item.idAcheteur || ''
+        });
+
+        // Construire l'URL pour la mise à jour des acheteurs
+        // on stock le resultat dans une variable 
+        const updateUrl = buildEncodedLink('H_updateAcheter', {
+            H_idEmploye: item.idEmploye || '',
+            Y_idAcheteur: item.idAcheteur || ''
+        });
+
         // Crée l'élément HTML pour chaque acheteur
         // Assurez-vous que les noms de propriétés (e.g., item.nomAcheteur) correspondent à ceux de votre BD
         const itemElement = document.createElement('div');
@@ -67,13 +109,14 @@ function displayItems(items, wrapper, rowsPerPage, page) {
                 </div>
                 <div class="card-footer">
                     <div class="btn-group w-100" role="group">
-                        <a href="Y_acheteurDetailController.php?H_idEmploye=${item.idEmploye || ''}&Y_idAcheteur=${item.idAcheteur || ''}" class="btn btn-outline-primary btn-sm">
+                        <!-- Afficher ici -->
+                        <a href="${detailUrl}" class="btn btn-outline-primary btn-sm">
                             <i class="bi bi-eye"></i> Voir
                         </a>
-                        <a href="Y_dossierController.php?H_idEmploye=${item.idEmploye || ''}&Y_idAcheteur=${item.idAcheteur || ''}" class="btn btn-outline-success btn-sm">
+                        <a href="${dossierUrl}" class="btn btn-outline-success btn-sm">
                             <i class="bi bi-eye"></i> Dossier
                         </a>
-                        <a href="H_updateAcheterController.php?H_idEmploye=${item.idEmploye || ''}&Y_idAcheteur=${item.idAcheteur || ''}" class="btn btn-outline-primary btn-sm">
+                        <a href="${updateUrl}" class="btn btn-outline-primary btn-sm">
                             <i class="bi bi-pencil"></i> Modifier
                         </a>
                     </div>

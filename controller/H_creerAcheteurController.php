@@ -1,12 +1,10 @@
 <?php
     session_start(); //demarrer la session
     //************* appel du fichier de connexion a la base de donnée***** */
-    require_once("../models/H_databaseConnection.php");
+    require_once("models/H_databaseConnection.php");
     $H_dbConnect = F_databaseConnection("localhost", "fodjomanage", "root", "");
     //**********appel du fichier des fonctions creer ************ */
-    require("../models/H_functionsModels.php");
-
-    $H_idEmploye=$_GET['H_idEmploye'];
+    $H_idEmploye = $Y_urlDecoder['H_idEmploye']; 
     $H_empAsPrivilege = 'SELECT * FROM employesprivileges wHERE idEmploye =? and idPrivilege=?';
     $H_execute_req= F_executeRequeteSql($H_empAsPrivilege,[$H_idEmploye,"PRI00004"]);
 
@@ -21,7 +19,7 @@
 
     if(($_SESSION['H_employeConnecte']==='connected'))
     {
-        if(isset($_GET['H_idEmploye']) && $_GET['H_idEmploye'] === $_SESSION['H_idEmploye'] )
+        if(isset($H_idEmploye) && $H_idEmploye === $_SESSION['H_idEmploye'] )
         {
             if(isset($_POST['Enregistrer'])) //si le user clique sur le btn enregistrer
             {
@@ -141,7 +139,7 @@
     
                                                             $H_updateSite = "UPDATE blocs, sites SET superficieCourranteSite  = superficieCourranteSite -? WHERE blocs.numeroTitreFoncier = sites.numeroTitreFoncier AND blocs.idBloc = ?";
                                                             $H_executeUpdateSite = F_executeRequeteSql($H_updateSite, [$H_superficie, $H_bloc]);
-                                                            header('Location:../controller/Y_acheteurController.php?H_idEmploye='.$H_idEmploye);
+                                                            header('Location:'.contructUrl('Y_acheteur' , ['H_idEmploye'=>$_SESSION['H_idEmploye']]));
                                                         
                                                         }
                                                         else
@@ -186,8 +184,8 @@
     }
     else
         //var_dump($_SESSION['H_employeConnecte']);
-        header('Location:../index.php');
+        header('Location:index.php');
   
     
-    require('../controller/Y_acheteurController.php');
+    require('controller/Y_acheteurController.php');
 ?>

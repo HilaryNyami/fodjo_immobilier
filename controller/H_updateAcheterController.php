@@ -1,27 +1,30 @@
 <?php
     session_start(); //demarrer la session
     //************* appel du fichier de connexion a la base de donnée***** */
-    require_once("../models/H_databaseConnection.php");
+    require_once("models/H_databaseConnection.php");
     $H_dbConnect = F_databaseConnection("localhost", "fodjomanage", "root", "");
-    //**********appel du fichier des fonctions creer ************ */
-    require("../models/H_functionsModels.php");
 
-    //recuperation de l'id de l'employe qui veut modifier l'acheteur
-    $H_idEmploye=$_GET['H_idEmploye'];
+    // Recuperer l'URL décodée
+    // Remplacer $_SESSION['H_idEmploye'] par $Y_idEmployes
+    // et $_SESSION['Y_idAcheteur'] par $Y_idAcheteur
+    $Y_idEmployes = $Y_urlDecoder['H_idEmploye']; 
+    $Y_idAcheteur = $Y_urlDecoder['Y_idAcheteur'];
+
+
     //$H_empAsPrivilege = 'SELECT * FROM employesprivileges wHERE idEmploye =? and idPrivilege=?';
     //$H_execute_req= F_executeRequeteSql($H_empAsPrivilege,[$H_idEmploye,"PRI00004"]);
 
     //recuperation des informations enregistrees de l'acheteur
-    $H_executeGetInfoAcheteur = F_executeRequeteSql("SELECT * FROM acheteur WHERE idAcheteur = ?", [$_GET['Y_idAcheteur']]);
-    $H_executeGetInfoSelection = F_executeRequeteSql("SELECT * FROM selection WHERE idAcheteur = ?", [$_GET['Y_idAcheteur']]);
-    $H_executeGetInfoVersement = F_executeRequeteSql("SELECT * FROM versements WHERE idAcheteur = ?", [$_GET['Y_idAcheteur']]);
+    $H_executeGetInfoAcheteur = F_executeRequeteSql("SELECT * FROM acheteur WHERE idAcheteur = ?", [$Y_idAcheteur]);
+    $H_executeGetInfoSelection = F_executeRequeteSql("SELECT * FROM selection WHERE idAcheteur = ?", [$Y_idAcheteur]);
+    $H_executeGetInfoVersement = F_executeRequeteSql("SELECT * FROM versements WHERE idAcheteur = ?", [$Y_idAcheteur]);
     
     //recuperation des informations liees au terrain
     $H_executeGetBlocSite = F_executeRequeteSql("SELECT * FROM blocs WHERE	superficieCourranteBloc  > 0");
     $H_getPrixMetreCarre = "SELECT sites.prix_Vente FROM sites INNER JOIN blocs ON sites.numeroTitreFoncier = blocs.numeroTitreFoncier WHERE blocs.idBloc = ?";
-    $H_executeGetLot = F_executeRequeteSql("SELECT blocs.numeroTitreFoncier, blocs.idBloc FROM blocs INNER JOIN selection USING(idBloc) WHERE idAcheteur= ?", [$_GET['Y_idAcheteur']]);
+    $H_executeGetLot = F_executeRequeteSql("SELECT blocs.numeroTitreFoncier, blocs.idBloc FROM blocs INNER JOIN selection USING(idBloc) WHERE idAcheteur= ?", [$Y_idAcheteur]);
     //Recuperation de la supercie que l'acheteur avait avant modification
-    $H_getSupercieActuelle = F_executeRequeteSql('SELECT superficieSelection FROM selection WHERE idAcheteur = ?', [$_SESSION['H_idAcheteur']]);
+    $H_getSupercieActuelle = F_executeRequeteSql('SELECT superficieSelection FROM selection WHERE idAcheteur = ?', [$Y_idAcheteur]);
 
     // Sélection des autres données (blocs, sites, employés)
     $H_executeBloc = F_executeRequeteSql("SELECT * FROM blocs ");
@@ -32,10 +35,12 @@
     $H_tableauErreurs = [];
     $H_regexTelephone = "/^(6[2]|6[5-9])([0-9]{7})/";
 
+   
     if(($_SESSION['H_employeConnecte']==='connected'))
     {
-        $_SESSION['H_idAcheteur'] = $_GET['Y_idAcheteur'];
-        if(isset($_GET['H_idEmploye']) && $_GET['H_idEmploye'] === $_SESSION['H_idEmploye'] )
+
+        if(isset($Y_idEmployes) && $Y_idEmployes === $_SESSION['H_idEmploye'] )
+
         {
             if(isset($_POST['Modifier'])) //si le user clique sur le btn enregistrer
             {
@@ -61,13 +66,11 @@
                                                         {
                                                          
                                                             // ---------------------------------------------------- Dans la table acheteur ------------------------------------------
-                                                            //recuperation de l'id de l'employe qui enregistre l' Acheteur
-                                                            $H_idEmploye = $_SESSION['H_idEmploye'];
 
-                                                            // var_dump(array($_SESSION['H_idAcheteur'], $H_idEmploye, strtoupper($H_nomAcheteur)." ".strtoupper($H_prenomAcheteur), $H_adresseAcheteur, $H_telephoneAchteur, $H_numDoc, , $H_dateNais, $H_commercial, $H_notesAcheteur));
+                                                            // var_dump(array($Y_idAcheteur, $H_idEmploye, strtoupper($H_nomAcheteur)." ".strtoupper($H_prenomAcheteur), $H_adresseAcheteur, $H_telephoneAchteur, $H_numDoc, , $H_dateNais, $H_commercial, $H_notesAcheteur));
                                                             // exit;
                                                             $H_updateAcheteur = 'UPDATE acheteur  SET idEmploye = ?, nomAcheteur = ?, adresseAcheteur = ?, telephoneAcheteur = ?, numeroCNI = ?, dateNaisAcheteur = ?, nomCommercial = ?, notesAcheteur = ?, dateCreateAcheteur = NOW() WHERE idAcheteur = ?';
-                                                            $H_tableauParametres = [$H_idEmploye, strtoupper($H_nomAcheteur), $H_adresseAcheteur, $H_telephoneAchteur, $H_numDoc, $H_dateNais, $H_commercial, $H_notesAcheteur, $_SESSION['H_idAcheteur']];
+                                                            $H_tableauParametres = [$Y_idEmployes, strtoupper($H_nomAcheteur), $H_adresseAcheteur, $H_telephoneAchteur, $H_numDoc, $H_dateNais, $H_commercial, $H_notesAcheteur, $Y_idAcheteur];
                                                             $H_executeUpdateAcheteur = F_executeRequeteSql($H_updateAcheteur, $H_tableauParametres); //ajoute le nouveau Acheteur pour la descente
                                                             $H_tableauErreurs[] = 'Cet Acheteur a été modifié avec success!!!';
     
@@ -76,7 +79,7 @@
                                                             //recuperation du solde courant pour l'incrémenter
                                                             $H_montantTotalSelection = $H_superficie*$H_prixMetreCarre;
                                                             $H_updateSelection = 'UPDATE selection SET lot = ?, superficieSelection = ?, montantParMetre = ?, montantTotalSelection = ?, idBloc = ?, idEmploye = ?, dateCreateSelection = NOW() WHERE idAcheteur = ?';
-                                                            $H_tableauParametres = [$H_site.' '.$H_bloc, $H_superficie, $H_prixMetreCarre, $H_montantTotalSelection, $H_bloc, $H_idEmploye, $_SESSION['H_idAcheteur']];
+                                                            $H_tableauParametres = [$H_site.' '.$H_bloc, $H_superficie, $H_prixMetreCarre, $H_montantTotalSelection, $H_bloc, $Y_idEmployes, $Y_idAcheteur];
                                                             $H_executeInsertSelection = F_executeRequeteSql($H_updateSelection, $H_tableauParametres); //ajoute la nouvelle Selection pour la descente
     
                                                             // ---------------------------------------------------- Dans la table Versements ------------------------------------------
@@ -84,13 +87,13 @@
                                                             //recuperation du solde courant pour l'incrémenter
     
                                                             $H_updateVersement = 'UPDATE versements SET montantVersement = ?, dateVersement = NOW(), dateCreateVersement = NOW() WHERE idAcheteur = ?';
-                                                            $H_tableauParametres = [$H_montantVersement, $_SESSION['H_idAcheteur']];
+                                                            $H_tableauParametres = [$H_montantVersement, $Y_idAcheteur];
                                                             $H_executeInsertVersement = F_executeRequeteSql($H_updateVersement, $H_tableauParametres); //ajoute le nouveau Versement pour la descente
-                                                            $H_getIdVersement = F_executeRequeteSql('SELECT idVersement FROM versements WHERE idAcheteur = ?', [$_SESSION['H_idAcheteur']]);
+                                                            $H_getIdVersement = F_executeRequeteSql('SELECT idVersement FROM versements WHERE idAcheteur = ?', [$Y_idAcheteur]);
                                                             // ---------------------------------------------------- Dans la table transaction ------------------------------------------
                                                                         
                                                             $H_updateTransaction = 'UPDATE transactions SET montantTransaction = ?, idEmploye = ?, dateTransaction = NOW(), dateCreateTransaction = NOW() WHERE idVersement = ?';
-                                                            $H_tableauParametres = [$H_montantVersement, $H_idEmploye, $H_getIdVersement->idVersement];
+                                                            $H_tableauParametres = [$H_montantVersement, $Y_idEmployes, $H_getIdVersement->idVersement];
                                                             $H_executeInsertTransaction = F_executeRequeteSql($H_updateTransaction, $H_tableauParametres); //ajoute la nouvelle transaction pour la descente
                                                             
                                                             //-------------------------------------- mettre à jour la superficie du bloc et du site-------------------------------------------------------------
@@ -101,7 +104,8 @@
                                                             $H_executeUpdateSite = F_executeRequeteSql($H_updateSite, [$H_superficie, $H_bloc]);
 
                                                             // Redirection vers la page de TOUS les acheteur
-                                                            header('Location:../controller/Y_acheteurController.php?H_idEmploye='.$H_idEmploye);
+                                                            header('Location:'.contructUrl('Y_acheteur' , ['H_idEmploye'=>$_SESSION['H_idEmploye'], 'Y_idAcheteur'=>$Y_idAcheteur]));
+                                                            exit;
                                                         
                                                         }
                                                         else
@@ -141,8 +145,8 @@
     }
     else
         //var_dump($_SESSION['H_employeConnecte']);
-        header('Location:../index.php');
+        header('Location:index.php');
   
     
-    require('../views/acheteur/acheteurUpdate.php');
+    require('views/acheteur/acheteurUpdate.php');
 ?>
