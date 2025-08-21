@@ -22,6 +22,14 @@ $items_json = json_encode($H_executeEmployes);
 //recuperation de tous les types d'employés dans la base de données
 $H_executeTypeEmployes = F_executeRequeteSql("SELECT * FROM typeemploye");
 
+// if(isset($_GET[$Y_urlDecoder['H_idEmployeUpdate']])) {
+//     $H_idEmployeUpdate = $Y_urlDecoder['H_idEmployeUpdate'];
+//     $H_idEmployeConnected = $Y_urlDecoder['H_idEmploye']; 
+//     //recuperation des informations enregistrees de l'Employe
+//     $H_executeGetInfoEmploye = F_executeRequeteSql("SELECT * FROM employe WHERE idEmploye = ?", [$H_idEmployeUpdate]);
+//     $H_executeGetPosteEmploye = F_executeRequeteSql("SELECT typeemploye.libelleFonction FROM typeemploye INNER JOIN employe USING(idTypeEmploye) WHERE idEmploye = ?", [$H_idEmployeUpdate]);
+   
+// } 
 // 4. Inclusion de la vue
 require('views/employes/employesView.php');
 

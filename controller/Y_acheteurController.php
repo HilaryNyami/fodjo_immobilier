@@ -10,7 +10,11 @@ $Y_idEmployes = $Y_urlDecoder['H_idEmploye'];
 
 // 2. Sélection de TOUS les acheteurs et leurs sélections
 // Assurez-vous que cette requête retourne TOUS les enregistrements, sans LIMIT/OFFSET.
+<<<<<<< HEAD
+$Y_executeAcheteurs = F_executeRequeteSql("SELECT * FROM acheteur INNER JOIN selection ON acheteur.idAcheteur = selection.idAcheteur INNER JOIN blocs ON selection.idBloc = blocs.idBloc INNER JOIN sites ON blocs.numeroTitreFoncier = sites.numeroTitreFoncier ORDER BY acheteur.dateCreateAcheteur DESC");
+=======
 $Y_executeAcheteurs = F_executeRequeteSql("SELECT * FROM acheteur INNER JOIN selection ON acheteur.idAcheteur = selection.idAcheteur INNER JOIN blocs ON selection.idBloc = blocs.idBloc INNER JOIN sites ON blocs.numeroTitreFoncier = sites.numeroTitreFoncier");
+>>>>>>> a5c551574782650f6c9b4e77b9963954dc70127e
 
 // Ajoutez un check pour s'assurer que les données sont bien un tableau (ou un objet traversable)
 if (!is_array($Y_executeAcheteurs) && !($Y_executeAcheteurs instanceof Traversable)) {
