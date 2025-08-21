@@ -7,6 +7,34 @@ const noItemsMessage = document.getElementById('no-items-message');
 const itemsPerPage = 6;
 let currentPage = 1;
 
+// Références aux champs du formulaire de MODIFICATION
+const updateModal = document.getElementById('updateEmployeModal');
+const updateForm = document.getElementById('updateEmployeForm');
+const updateIdEmployeInput = document.getElementById('update_idEmploye');
+const updateNomInput = document.getElementById('update_nom');
+const updatePrenomInput = document.getElementById('update_prenom');
+const updatePseudoEmployeInput = document.getElementById('update_pseudoEmploye');
+const updateDateNaisEmployeInput = document.getElementById('update_dateNaisEmploye');
+const updateTelephoneEmployeInput = document.getElementById('update_telephoneEmploye');
+const updateEmailEmployeInput = document.getElementById('update_emailEmploye');
+const updateAdresseEmployeInput = document.getElementById('update_adresseEmploye');
+const updatePosteEmployeSelect = document.getElementById('update_posteEmploye');
+
+
+// Equivalent de la function PHP pour construire l'URL encodée
+// Ici ont encode les paramètres de la page en Base64 et les formate pour l'URL
+function buildEncodedLink(page, params = {}) {
+    let encodedParams = '';
+    if (Object.keys(params).length > 0) {
+        const jsonStr = JSON.stringify(params);
+        encodedParams = btoa(jsonStr)
+            .replace(/\+/g, '-')
+            .replace(/\//g, '_')
+            .replace(/=+$/, '');
+    }
+    return `/FodjoManage/${page}/${encodedParams}`;
+}
+
 // Fonction pour rendre les éléments de la page actuelle
 function displayItems(items, wrapper, rowsPerPage, page) {
     wrapper.innerHTML = '';
@@ -24,6 +52,11 @@ function displayItems(items, wrapper, rowsPerPage, page) {
     }
 
     paginatedItems.forEach(item => {
+        // L'URL de modification n'est PLUS utilisée ici directement pour le lien
+        // Car nous allons utiliser le data-bs-toggle pour ouvrir la modale
+        // et pré-remplir avec JS.
+        // La construction de l'URL pour l'action du formulaire se fera via JS si nécessaire.
+
         const itemElement = document.createElement('div');
         itemElement.className = 'col-lg-4 col-md-6 mb-4';
 
@@ -57,7 +90,13 @@ function displayItems(items, wrapper, rowsPerPage, page) {
                 </div>
                 <div class="card-footer">
                     <div class="btn-group w-100" role="group">
-                        <a href="H_updateEmployeController.php?H_idEmploye=${item.idEmploye || ''}" class="btn btn-outline-primary btn-sm">
+                        <!-- Supprime le href direct, utilise data-bs-toggle pour la modale -->
+                        <!-- Ajoute un data-attribute pour stocker TOUTES les données de l'employé en JSON -->
+                        <a href="#" class="btn btn-outline-primary btn-sm update-btn" 
+                           data-bs-toggle="modal" 
+                           data-bs-target="#updateEmployeModal"
+                           data-employe-id="${item.idEmploye}"
+                           data-employe-data='${JSON.stringify(item)}'>
                             <i class="bi bi-eye"></i> Modifier
                         </a>
                     </div>
@@ -66,6 +105,8 @@ function displayItems(items, wrapper, rowsPerPage, page) {
         `;
         wrapper.appendChild(itemElement);
     });
+    // Après avoir affiché les éléments, attachez les écouteurs pour les boutons de modification
+    attachUpdateEventListeners();
 }
 
 // Fonction pour calculer l'âge (PHP F_calculerAge équivalent)
@@ -168,6 +209,52 @@ function paginationButton(page, items) {
     return button;
 }
 
+// Fonction pour attacher les écouteurs d'événements aux boutons de modification
+function attachUpdateEventListeners() {
+    const updateButtons = document.querySelectorAll('.update-btn');
+    updateButtons.forEach(button => {
+        // Assurez-vous d'ajouter l'écouteur qu'une seule fois si displayItems est appelé plusieurs fois
+        // Une solution plus robuste serait de cloner les éléments ou de vérifier si l'écouteur est déjà là.
+        // Pour cet exemple, on peut simplement s'assurer que displayItems n'est appelé qu'une fois pour l'affichage initial
+        // ou de détacher/réattacher les écouteurs.
+        button.removeEventListener('click', handleUpdateClick); // Éviter les écouteurs dupliqués
+        button.addEventListener('click', handleUpdateClick);
+    });
+}
+
+function handleUpdateClick(event) {
+    event.preventDefault(); // Empêche la navigation du lien
+
+    const employeeDataString = this.dataset.employeData;
+    const employeeData = JSON.parse(employeeDataString); // Parse les données JSON de l'employé
+    H_idEmployeUpdate
+    // Remplir les champs du formulaire de modification
+    updateIdEmployeInput.value = employeeData.idEmploye || '';
+    updateNomInput.value = employeeData.nomEmploye || '';
+    updatePseudoEmployeInput.value = employeeData.pseudoEmploye || '';
+    updateDateNaisEmployeInput.value = employeeData.dateNaisEmploye || '';
+    updateTelephoneEmployeInput.value = employeeData.telephoneEmploye || '';
+    updateEmailEmployeInput.value = employeeData.emailEmploye || '';
+    updateAdresseEmployeInput.value = employeeData.adresseEmploye || '';
+
+    // Pour le select de poste, il faut itérer sur les options pour trouver la bonne
+    for (let i = 0; i < updatePosteEmployeSelect.options.length; i++) {
+        if (updatePosteEmployeSelect.options[i].value == employeeData.idTypeEmploye) {
+            updatePosteEmployeSelect.selectedIndex = i;
+            break;
+        }
+    }
+
+    // L'action du formulaire peut être dynamique si l'ID de session n'est pas déjà dans l'action de base
+    // updateForm.action = buildEncodedLink('H_updateEmploye', {
+    //     H_idEmploye: H_idEmployeFromSession,
+    //     H_idEmployeUpdate: employeeData.idEmploye, // Ou garder hidden input
+    // });
+
+    // Bootstrap s'occupe déjà d'ouvrir la modale grâce à data-bs-toggle et data-bs-target
+}
+
+
 // Initialise la pagination au chargement de la page
 window.onload = function() {
     if (!allItems || allItems.length === 0) {
@@ -177,4 +264,58 @@ window.onload = function() {
         displayItems(allItems, itemsContainer, itemsPerPage, currentPage);
         setupPagination(allItems, paginationControls, itemsPerPage);
     }
+    // Ajoutez l'écouteur pour la modale Bootstrap pour s'assurer que le formulaire est rempli avant son affichage
+    // C'est une alternative à l'écouteur sur chaque bouton de modification, utile si d'autres choses déclenchent la modale
+    updateModal.addEventListener('show.bs.modal', function (event) {
+        // Le bouton qui a déclenché la modale
+        const button = event.relatedTarget; 
+        const employeeDataString = button.dataset.employeData;
+        const employeeData = JSON.parse(employeeDataString);
+        
+        // Remplir les champs du formulaire (répétition du code de handleUpdateClick pour la robustesse)
+        updateIdEmployeInput.value = employeeData.idEmploye || '';
+        updateNomInput.value = employeeData.nomEmploye || '';
+        updatePseudoEmployeInput.value = employeeData.pseudoEmploye || '';
+        updateDateNaisEmployeInput.value = employeeData.dateNaisEmploye || '';
+        updateTelephoneEmployeInput.value = employeeData.telephoneEmploye || '';
+        updateEmailEmployeInput.value = employeeData.emailEmploye || '';
+        updateAdresseEmployeInput.value = employeeData.adresseEmploye || '';
+
+        for (let i = 0; i < updatePosteEmployeSelect.options.length; i++) {
+            if (updatePosteEmployeSelect.options[i].value == employeeData.idTypeEmploye) {
+                updatePosteEmployeSelect.selectedIndex = i;
+                break;
+            }
+        }
+    });
 };
+
+// --- Fonctions de Recherche et Filtre (Ajoutées pour améliorer l'expérience) ---
+const searchInput = document.getElementById('searchInput');
+const roleFilter = document.getElementById('roleFilter');
+
+function filterAndDisplayItems() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const selectedRole = roleFilter.value;
+
+    const filteredItems = allItems.filter(item => {
+        const matchesSearch = (item.nomEmploye && item.nomEmploye.toLowerCase().includes(searchTerm)) ||
+                              (item.prenomEmploye && item.prenomEmploye.toLowerCase().includes(searchTerm)) ||
+                              (item.pseudoEmploye && item.pseudoEmploye.toLowerCase().includes(searchTerm)) ||
+                              (item.emailEmploye && item.emailEmploye.toLowerCase().includes(searchTerm)) ||
+                              (item.adresseEmploye && item.adresseEmploye.toLowerCase().includes(searchTerm)) ||
+                              (item.libelleFonction && item.libelleFonction.toLowerCase().includes(searchTerm));
+        
+        const matchesRole = selectedRole === '' || (item.libelleFonction && item.libelleFonction === selectedRole);
+
+        return matchesSearch && matchesRole;
+    });
+
+    currentPage = 1; // Réinitialise la page après le filtrage
+    displayItems(filteredItems, itemsContainer, itemsPerPage, currentPage);
+    setupPagination(filteredItems, paginationControls, itemsPerPage);
+}
+
+// Écouteurs d'événements pour la recherche et le filtre
+searchInput.addEventListener('keyup', filterAndDisplayItems);
+roleFilter.addEventListener('change', filterAndDisplayItems);

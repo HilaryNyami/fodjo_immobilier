@@ -63,7 +63,7 @@ function displayItems(items, wrapper, rowsPerPage, page) {
 
         // Construire l'URL pour la mise à jour des acheteurs
         // on stock le resultat dans une variable 
-        const updateUrl = buildEncodedLink('H_updateAcheter', {
+        const updateUrl = buildEncodedLink('H_updateAcheteur', {
             H_idEmploye: item.idEmploye || '',
             Y_idAcheteur: item.idAcheteur || ''
         });
