@@ -75,7 +75,7 @@
                                 <label class="info-label">Email</label>
                                 <p class="info-value">
                                     <i class="bi bi-envelope me-1"></i>
-                                    FodjoImmo@gmail.com
+                                    weldone.ourcontact14@gmail.com
                                 </p>
                             </div>
                         </div>

@@ -1,13 +1,8 @@
 <?php
-// session_start(); // Assurez-vous que la session est démarrée
+ //session_start(); // Assurez-vous que la session est démarrée
 require('views/template/header.php');
 require('views/template/navbar.php');
 
-// Ces variables $H_executeEmployes, $items_json, $H_executeTypeEmployes
-// doivent être définies par votre contrôleur avant d'inclure cette vue.
-// Si $H_executeGetInfoEmploye et $H_executeGetPosteEmploye sont utilisés SEULEMENT
-// pour pré-remplir cette modale lors d'un accès direct à H_updateEmploye.php,
-// alors ils ne sont pas nécessaires ici pour la logique de pré-remplissage via JS.
 ?>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -38,12 +33,26 @@ require('views/template/navbar.php');
                 <option value="Autre">Autre</option>
             </select>
         </div>
+        <!-- <div class="col-md-3 dropdown"> -->
         <div class="col-md-3">
-            <button class="btn btn-secondary bg-secondary-blue border-0" id="exportCsvButton">
-                <i class="bi bi-file-earmark-arrow-down me-2"></i>
-                Exporter en CSV
-            </button>
+            <form method="post" action="<?= contructUrl('H_exportEmployes' , ['H_idEmploye'=>$_SESSION['H_idEmploye']]) ?>">
+                
+                <button class="btn btn-secondary bg-secondary-blue border-0" type="submit"  name="exportPdfEmployes">
+                    <i class="bi bi-file-earmark-arrow-down me-2"></i>
+                    Exporter la liste en pdf
+                </button>
+            </form>
         </div>
+            <!-- <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li>
+                    <form action="" method="post">
+                       <a class="dropdown-item" href="#">PDF</a> 
+                    </form>
+                </li>
+                <li><a class="dropdown-item" href="#">CSV</a></li>
+                <li><a class="dropdown-item" href="#">Word</a></li>
+            </ul>
+        </div> -->
     </div>
 
     <div class="row" id="employes-cards-container">
@@ -70,7 +79,8 @@ require('views/template/navbar.php');
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="/FodjoManage/<?= encodeUrl(['page'=>'H_creerEmploye' , 'H_idEmploye'=>$_SESSION['H_idEmploye']])?>">
+                <form method="POST" action="<?= contructUrl('H_creerEmploye' , ['H_idEmploye'=>$_SESSION['H_idEmploye']]) ?>">
+                    
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <div class="form-floating">
@@ -148,6 +158,7 @@ require('views/template/navbar.php');
 
 <!-- ====================== modal form pour la modification d'un employe ================ -->
 <div class="modal fade" id="updateEmployeModal" tabindex="-1">
+    <?=var_dump($_SESSION['H_idEmploye'])?>
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-primary-green text-white">
@@ -156,7 +167,7 @@ require('views/template/navbar.php');
             </div>
             <div class="modal-body">
                 <!-- Ajout d'un ID au formulaire de modification -->
-                <form id="updateEmployeForm" method="POST" action="/FodjoManage/<?= encodeUrl(['page'=>'H_updateEmploye', 'H_idEmploye'=>$_SESSION['H_idEmploye']])?>">
+                <form id="updateEmployeForm" method="POST" action="">
                     <!-- Champ caché pour l'ID de l'employé à modifier -->
                     <input type="hidden" id="update_idEmploye" name="H_idEmployeUpdate">
                     <div class="row">

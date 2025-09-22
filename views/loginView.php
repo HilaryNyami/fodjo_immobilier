@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FodjoManage - Connexion</title>
+    <title>Land Solution - Connexion</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: #2563eb;
-            --primary-green: #16a34a;
-            --light-blue: #dbeafe;
-            --light-green: #dcfce7;
+            --primary-blue: #0D1B2A;
+            --primary-green: #FF6B35;
+            --light-blue: rgba(13, 27, 42, 0.5);
+            --light-green: rgba(255, 107, 53, 0.5);
         }
         
         .bg-primary-blue { background-color: var(--primary-blue) !important; }
@@ -74,14 +74,14 @@
             <div class="col-md-6 col-lg-5">
                 <div class="card">
                     <div class="card-header bg-primary-blue text-white">
-                        <h2 class="mb-0">FodjoManage</h2>
+                        <h2 class="mb-0">Land-Solution</h2>
                         <p class="lead mb-0">Connectez-vous à votre compte</p>
                     </div>
                     <div class="card-body">
                         <form method="post">
                             <div class="form-floating mb-3">
                                 <input type="name" name="noms" class="form-control" id="name" placeholder="john" required>
-                                <label for="name">Noms</label>
+                                <label for="name">Pseudo</label>
                             </div>
                             <div class="form-floating mb-4">
                                 <input type="password" name="mdp" class="form-control" id="password" placeholder="Mot de passe" required>

@@ -33,4 +33,12 @@ if (count($segments) >= 3) {
         }
 
 }
+else if (count($segments) <= 1 || $segments[0] === 'FodjoManage') {
+    // Page d'accueil ou redirection par défaut
+   // echo "Bienvenue sur FodjoManage! Veuillez sélectionner une page.";
+    require("index.php");
+
+} else {
+    echo "URL invalide.";
+}
 ?>

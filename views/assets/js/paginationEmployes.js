@@ -244,14 +244,6 @@ function handleUpdateClick(event) {
             break;
         }
     }
-
-    // L'action du formulaire peut être dynamique si l'ID de session n'est pas déjà dans l'action de base
-    // updateForm.action = buildEncodedLink('H_updateEmploye', {
-    //     H_idEmploye: H_idEmployeFromSession,
-    //     H_idEmployeUpdate: employeeData.idEmploye, // Ou garder hidden input
-    // });
-
-    // Bootstrap s'occupe déjà d'ouvrir la modale grâce à data-bs-toggle et data-bs-target
 }
 
 
@@ -281,12 +273,33 @@ window.onload = function() {
         updateEmailEmployeInput.value = employeeData.emailEmploye || '';
         updateAdresseEmployeInput.value = employeeData.adresseEmploye || '';
 
-        for (let i = 0; i < updatePosteEmployeSelect.options.length; i++) {
+        for (let i = 0; i < updatePosteEmployeSelect.options.length; i++) 
+        {
             if (updatePosteEmployeSelect.options[i].value == employeeData.idTypeEmploye) {
                 updatePosteEmployeSelect.selectedIndex = i;
                 break;
             }
         }
+
+        // --- NOUVELLE LOGIQUE : Mettre à jour l'action du formulaire AVEC l'ID de l'employé ---
+        //const baseUrl = 'FodjoManage/H_updateEmploye/'; // L'URL de base pour le contrôleur
+        const params = {
+            H_idEmploye: H_idEmployeFromSession, // ID de l'employé connecté depuis la session PHP
+            H_idEmployeUpdate: employeeData.idEmploye, // L'ID de l'employé à mettre à jour est déjà dans H_idEmployeUpdate (champ caché) et doit aller dans l'URL
+            // Si votre contrôleur H_updateEmployeController.php s'attend à $Y_urlDecoder['H_idEmployeUpdate'] dans l'URL
+            
+        };
+
+        // Construire l'URL d'action complète en utilisant buildEncodedLink directement
+        // 'H_updateEmploye' est le nom de la page/contrôleur que votre routeur attend.
+        const encodedActionUrl = buildEncodedLink('H_updateEmploye', params);
+
+        // Construire l'URL encodée pour l'action du formulaire
+        //const encodedActionUrl = baseUrl + buildEncodedLink('', params).substring(1); // Enlève le premier '/' si buildEncodedLink le met
+
+        // Mettre à jour l'attribut action du formulaire
+        updateForm.action = encodedActionUrl;
+        console.log("Action du formulaire mise à jour à :", updateForm.action);
     });
 };
 

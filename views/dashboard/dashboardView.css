@@ -1,8 +1,8 @@
 :root {
-    --primary-blue: #2563eb;
-    --primary-green: #16a34a;
-    --light-blue: #dbeafe;
-    --light-green: #dcfce7;
+    --primary-blue: #0D1B2A;
+    --primary-green: #FF6B35;
+    --light-blue: rgba(13, 27, 42, 0.5);
+    --light-green: rgba(255, 107, 53, 0.5);
 }
 
 .bg-primary-blue {

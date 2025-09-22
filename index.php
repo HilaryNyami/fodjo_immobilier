@@ -32,7 +32,7 @@ if(isset($_POST['connecter'])){
         // $H_ifPrivilege = F_gestionPrivilege($_SESSION['H_idEmploye'], 'PRI00005');
         // if($H_ifPrivilege)
         // Tableau complet
-            $params = ['page'=>'Y_site', 'H_idEmploye'=>$_SESSION['H_idEmploye']];
+            $params = ['page'=>'Y_dashboard', 'H_idEmploye'=>$_SESSION['H_idEmploye']];
 
             // Extraire la page
             $page = $params['page'];

@@ -3,159 +3,133 @@ require('views/template/header.php');
 require('views/template/navbar.php');
 ?>
 
-            <!-- Main content -->
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2 text-primary-blue">Dashboard</h1>
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">
-                            <i class="bi bi-calendar3"></i>
-                            Cette semaine
-                        </button>
-                    </div>
-                </div>
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+        <h1 class="h2 text-primary-blue">Tableau de bord</h1>
+        <button class="btn btn-outline-primary" onclick="location.reload()">
+            <i class="bi bi-arrow-clockwise"></i> Actualiser
+        </button>
+    </div>
 
-                <!-- Stats Cards -->
-                <div class="row mb-4">
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card stats-card border-0 shadow-sm card-hover" style="border-left-color: var(--primary-blue);">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary-blue text-uppercase mb-1">
-                                            Prospects
-                                        </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">142</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="bi bi-search text-primary-blue" style="font-size: 2rem;"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card stats-card border-0 shadow-sm card-hover" style="border-left-color: var(--primary-green);">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary-green text-uppercase mb-1">
-                                            Acheteurs
-                                        </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">89</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="bi bi-people text-primary-green" style="font-size: 2rem;"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card stats-card border-0 shadow-sm card-hover" style="border-left-color: #f59e0b;">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                            Dossiers en cours
-                                        </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">34</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="bi bi-folder text-warning" style="font-size: 2rem;"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card stats-card border-0 shadow-sm card-hover" style="border-left-color: #dc2626;">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                            Terrains vendus
-                                        </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">67</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="bi bi-geo-alt text-danger" style="font-size: 2rem;"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recent Activities -->
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="card shadow-sm">
-                            <div class="card-header bg-primary-blue text-white">
-                                <h6 class="m-0 font-weight-bold">Activités récentes</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="list-group list-group-flush">
-                                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h6 class="mb-1">Nouveau prospect ajouté</h6>
-                                            <p class="mb-1">Jean Dupont - Téléphone: 123456789</p>
-                                            <small class="text-muted">Il y a 2 heures</small>
-                                        </div>
-                                        <span class="badge bg-primary-blue rounded-pill">Nouveau</span>
-                                    </div>
-                                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h6 class="mb-1">Dossier signé</h6>
-                                            <p class="mb-1">Marie Martin - PV signé</p>
-                                            <small class="text-muted">Il y a 4 heures</small>
-                                        </div>
-                                        <span class="badge bg-primary-green rounded-pill">Signé</span>
-                                    </div>
-                                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h6 class="mb-1">Terrain vendu</h6>
-                                            <p class="mb-1">Site A - Bloc 3 - 500m²</p>
-                                            <small class="text-muted">Hier</small>
-                                        </div>
-                                        <span class="badge bg-success rounded-pill">Vendu</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <div class="card shadow-sm">
-                            <div class="card-header bg-primary-green text-white">
-                                <h6 class="m-0 font-weight-bold">Actions rapides</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-primary" onclick="window.location.href='prospection.html'">
-                                        <i class="bi bi-plus-circle me-2"></i>
-                                        Ajouter un prospect
-                                    </button>
-                                    <button class="btn btn-outline-success" onclick="window.location.href='acheteurs.html'">
-                                        <i class="bi bi-person-plus me-2"></i>
-                                        Nouveau client
-                                    </button>
-                                    <button class="btn btn-outline-info" onclick="window.location.href='sites.html'">
-                                        <i class="bi bi-geo-alt-fill me-2"></i>
-                                        Gérer les sites
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
+    <!-- Statistiques globales -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center p-3 border-primary">
+                <i class="bi bi-map-fill text-primary fs-1"></i>
+                <h6 class="text-muted">Sites</h6>
+                <h3 class="fw-bold"><?= $Totalesite ?></h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center p-3 border-success">
+                <i class="bi bi-grid-fill text-success fs-1"></i>
+                <h6 class="text-muted">Blocs</h6>
+                <h3 class="fw-bold"><?= $Totalebloc ?></h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center p-3 border-info">
+                <i class="bi bi-people-fill text-info fs-1"></i>
+                <h6 class="text-muted">Acheteurs</h6>
+                <h3 class="fw-bold"><?= $Totaleacheteur ?></h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center p-3 border-warning">
+                <i class="bi bi-cash-stack text-warning fs-1"></i>
+                <h6 class="text-muted">Total encaissé</h6>
+                <h3 class="fw-bold"><?= number_format($Totaleencaisse, 0, ',', ' ') ?> FCFA</h3>
+            </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    <!-- Graphiques -->
+    <div class="row mb-4">
+        <div class="col-lg-6">
+            <div class="card shadow-sm p-3">
+                <h6 class="mb-3">Répartition des ventes par site</h6>
+                <canvas id="ventesParSite"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card shadow-sm p-3">
+                <h6 class="mb-3">Paiements par mois</h6>
+                <canvas id="paiementsMois"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dernières transactions -->
+    <div class="card shadow-sm p-3 mb-5">
+        <h6 class="mb-3">Dernières transactions</h6>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Acheteur</th>
+                        <th>Montant</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php if (!empty($derniereTransactions)) : ?>
+                    <?php foreach ($derniereTransactions as $transaction): ?>
+                    <tr>
+                        <td><?= $transaction->idTransaction ?></td>
+                        <td><?= htmlspecialchars($transaction->nomAcheteur) ?></td>
+                        <td><?= number_format($transaction->montantTransaction, 0, ',', ' ') ?> FCFA</td>
+                        <td><?= date('d/m/Y', strtotime($transaction->dateTransaction)) ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">Aucune transaction récente.</td>
+                    </tr>
+                <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ventesParSiteCtx = document.getElementById('ventesParSite').getContext('2d');
+const paiementsMoisCtx = document.getElementById('paiementsMois').getContext('2d');
+
+const ventesParSite = new Chart(ventesParSiteCtx, {
+    type: 'pie',
+    data: {
+        labels: <?= json_encode(array_map(fn($v) => $v->numeroTitreFoncier, $ventesParSite)) ?>,
+        datasets: [{
+            data: <?= json_encode(array_map(fn($v) => (int)$v->total, $ventesParSite)) ?>,
+            backgroundColor: ['#2563eb', '#16a34a', '#d97706', '#dc2626', '#9333ea']
+        }]
+    }
+});
+
+const paiementsMois = new Chart(paiementsMoisCtx, {
+    type: 'line',
+    data: {
+        labels: <?= json_encode(array_keys($paiementsParMois)) ?>,
+        datasets: [{
+            label: 'Montant encaissé',
+            data: <?= json_encode(array_values($paiementsParMois)) ?>,
+            borderColor: '#2563eb',
+            backgroundColor: 'rgba(37, 99, 235, 0.2)',
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: '#2563eb'
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

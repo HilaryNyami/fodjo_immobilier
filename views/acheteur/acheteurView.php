@@ -60,7 +60,7 @@ require('views/template/navbar.php');
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="<?= contructUrl('H_creerAcheteur' , ['H_idEmploye'=>$_SESSION['H_idEmploye']]) ?> ">
+                    <form method="POST" action="<?= contructUrl('H_creerAcheteur' , ['H_idEmploye'=>$_SESSION['H_idEmploye']]) ?>">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-floating">

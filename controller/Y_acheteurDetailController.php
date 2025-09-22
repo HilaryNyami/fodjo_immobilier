@@ -102,7 +102,7 @@ if (isset($_POST['telecharger'])) {
             // Vérification si le fichier existe déjà
             if(file_exists("/images" . $newFilename)) {
                 move_uploaded_file($_FILES["photo"]["tmp_name"], "images/" . $newFilename);
-                $cheminPieceIdentite = "images/".$numeroCNI .".jpg";
+                $cheminPieceIdentite = "images/".$newFilename;
             } else {
                 // Déplacement du fichier vers le dossier images
                 move_uploaded_file($_FILES["photo"]["tmp_name"], "images/" . $newFilename);
@@ -110,7 +110,7 @@ if (isset($_POST['telecharger'])) {
                     // Insertion dans la base de données
                     // $Y_executeInsertPieceIdentite = F_executeRequeteSql('INSERT INTO piece_identite (idAcheteur, nomPieceIdentite, typePieceIdentite) VALUES (?, ?, ?)', 
                     // [$Y_idAcheteur, $newFilename, $typePieceIdentite]);
-                $cheminPieceIdentite = "images/".$numeroCNI .".jpg";
+                $cheminPieceIdentite = "images/".$newFilename;
             }
         }
     }else {
@@ -126,7 +126,7 @@ if (isset($_POST['numeroCNI'])) {
     extract($_POST);
     
     // stocker le chemein de la pièce d'identité dans une variable
-    $_SESSION['cheminPieceIdentite'] = "../images/".$numeroCNI .".jpg";
+    $_SESSION['cheminPieceIdentite'] = "../images/".$numeroCNI .".png";
     // header("Location: Y_acheteurDetailController.php?H_idEmploye=".$_SESSION['H_idEmploye']."&Y_idAcheteur=".$Y_idAcheteur."&voirPiece=1");
     header('Location:'.contructUrl('Y_acheteurDetail' , ['H_idEmploye'=>$_SESSION['H_idEmploye'], 'Y_idAcheteur'=>$Y_idAcheteur, 'voirPiece'=>1]));
     exit;
@@ -208,7 +208,7 @@ if (isset($_POST['facture'])) {
 
     $pdf->SetFont('Arial','',8);
     $pdf->ln(1);
-    $pdf->Cell(19,1,'Avec CB Wonder votre satisfaction nous oblige. Aucune possibilite de ',0,1,'C');
+    $pdf->Cell(19,1,'Avec nous votre satisfaction nous oblige. Aucune possibilite de ',0,1,'C');
     $pdf->Cell(19,1,'remboursement mais votre recasement est assure en cas de soucis sans frais supplementaire',0,1,'C');
 
     $pdf->SetFont('Arial','',12);

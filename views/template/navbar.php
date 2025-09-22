@@ -5,7 +5,7 @@
             <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse">
                 <div class="position-sticky pt-3">
                     <div class="text-center mb-4">
-                        <h4 class="text-white">FodjoManage</h4>
+                        <h4 class="text-white">Land-Solution</h4>
                     </div>
                     <ul class="nav flex-column">
                         <?php 
@@ -23,7 +23,7 @@
                         {
                         ?> 
                         <li class="nav-item">
-                            <a <?php if(isset($_SESSION['H_idEmploye']) && ($_SESSION['H_employeConnecte']==='connected'))?> class="nav-link" href="prospection.html<?='?H_idEmploye='.$_SESSION['H_idEmploye']?>">
+                            <a <?php if(isset($_SESSION['H_idEmploye']) && ($_SESSION['H_employeConnecte']==='connected'))?> class="nav-link <?= $currentPage === 'H_prospectController.php' ? 'active' : '' ?>" href="<?= contructUrl('H_prospect' , ['H_idEmploye'=>$_SESSION['H_idEmploye']])?>">
                                 <i class="bi bi-search me-2"></i>
                                 Prospection
                             </a>

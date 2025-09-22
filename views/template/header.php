@@ -10,4 +10,6 @@
     <link href="../views/dashboard/dashboardView.css" rel="stylesheet">
     <link href="../views/dossier/dossierView.css" rel="stylesheet">
     <link href="../views/acheteur/acheteurDetails.css" rel="stylesheet">
+    <!-- <link href="../views/prospects/globals.css" rel="stylesheet"> -->
+
 </head>

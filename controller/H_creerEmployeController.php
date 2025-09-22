@@ -8,11 +8,12 @@
 
     $H_dbConnect = F_databaseConnection("localhost", "fodjomanage", "root", "");
     // Appel du fichier des fonctions du modèle
-    require("models/H_functionsModels.php");
+    // require("models/H_functionsModels.php");
 
     
-    $H_idEmploye = $Y_urlDecoder['H_idEmploye']; 
-    $_SESSION['H_idEmploye'] = $H_idEmployes;
+    $H_idEmploye = $Y_urlDecoder['H_idEmploye'];
+    // var_dump($H_idEmploye." et ". $_SESSION['H_idEmploye']);
+    // exit;
     $H_empAsPrivilege = 'SELECT * FROM Employesprivileges wHERE idEmploye =? and idPrivilege=?';
     $H_execute_req= F_executeRequeteSql($H_empAsPrivilege,[$H_idEmploye,"PRI00004"]);
 
@@ -23,14 +24,14 @@
     //  test
     // $_SESSION['H_EmployeConnecte'] = 'connected';
 
-    if(($_SESSION['H_EmployeConnecte']==='connected'))
+    if(($_SESSION['H_employeConnecte']==='connected'))
     {
         if(isset($H_idEmploye) && $H_idEmploye === $_SESSION['H_idEmploye'] )
         {
             if(isset($_POST['Enregistrer'])) //si le user clique sur le btn enregistrer
             {
                 extract($_POST); //extraction du contenu du tableau $_POST
-                $H_tableauValeurs = array($H_nomEmploye, $H_prenomEmploye, $pseudoEmploye,  $H_dateNaisEmploye, $H_telephoneEmploye, $H_adressEmploye, $H_emailEmploye, $H_posteEmploye);
+                $H_tableauValeurs = array($H_nomEmploye, $H_prenomEmploye, $pseudoEmploye,  $H_dateNaisEmploye, $H_telephoneEmploye, $H_adresseEmploye, $H_emailEmploye, $H_posteEmploye);
                 //var_dump($_POST);
         
                     if(F_exclureChampsVide($H_tableauValeurs) == true) //verifie si tous les champs sont remplis
@@ -65,14 +66,15 @@
                                                             //recuperation de l'id de l'Employe qui enregistre l' Employe
                                                             $H_idEmploye = $_SESSION['H_idEmploye'];
 
-                                                            // var_dump(array($H_newIdEmploye, $H_idEmploye, strtoupper($H_nomEmploye)." ".strtoupper($H_prenomEmploye), $H_adressEmploye, $H_telephoneEmploye, $pseudoEmploye, , $H_dateNaisEmploye, $H_commercial, $H_notesEmploye));
-                                                            // exit;
+                                                            //generer dynamiquement le mot de passe
+                                                            $H_mdpEmploye = F_generatePassword();
                                                             $H_insertEmploye = 'INSERT INTO employe (idEmploye, idTypeEmploye, nomEmploye, pseudoEmploye, emailEmploye, adresseEmploye, telephoneEmploye, dateNaisEmploye, mdpEmploye, dateCreateEmploye) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())';
-                                                            $H_tableauParametres = [$H_newIdEmploye, $H_idEmploye, strtoupper($H_nomEmploye)." ".strtoupper($H_prenomEmploye), $H_adressEmploye, $H_telephoneEmploye, $pseudoEmploye, $H_dateNaisEmploye, $H_commercial, $H_notesEmploye];
+                                                            $H_tableauParametres = [$H_newIdEmploye, $H_posteEmploye, strtoupper($H_nomEmploye)." ".strtoupper($H_prenomEmploye), $pseudoEmploye, $H_emailEmploye, $H_adresseEmploye, $H_telephoneEmploye,  $H_dateNaisEmploye, password_hash($H_mdpEmploye, PASSWORD_DEFAULT)];
                                                             $H_executeInsertEmploye = F_executeRequeteSql($H_insertEmploye, $H_tableauParametres); //ajoute le nouveau Employe pour la descente
                                                             $H_tableauErreurs[] = 'Nouvel Employe enregistré avec success!!!';
-    
+
                                                             header('Location:'.contructUrl('H_employes' , ['H_idEmploye'=>$_SESSION['H_idEmploye']]));
+                                                           // header('Location:/FodjoManage/'.encodeUrl(['page'=>'H_employes' , 'H_idEmploye'=>$H_idEmploye]));
                                                         
                                                     }
                                                     else
@@ -124,5 +126,3 @@
 
     require('views/Employes/EmployesView.php');
 ?>
-
-
