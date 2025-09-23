@@ -15,7 +15,7 @@ $segments = explode('/', $Y_url);
 // 3. Decoder l'URL et charger la page correspondante
 if (count($segments) >= 3) {
 
-    array_shift($segments); // supprime FodjoManage
+    array_shift($segments); // supprime land_solution
     $page = $segments[0];       // nom du contrôleur
     $encodedParams = $segments[1] ?? '';  // paramètres encodés
 
@@ -33,9 +33,9 @@ if (count($segments) >= 3) {
         }
 
 }
-else if (count($segments) <= 1 || $segments[0] === 'FodjoManage') {
+else if (count($segments) <= 1 || $segments[0] === 'land_solution') {
     // Page d'accueil ou redirection par défaut
-   // echo "Bienvenue sur FodjoManage! Veuillez sélectionner une page.";
+   // echo "Bienvenue sur land_solution! Veuillez sélectionner une page.";
     require("index.php");
 
 } else {

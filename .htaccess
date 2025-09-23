@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /FodjoManage/
+RewriteBase /land_solution/
 
 # Si le fichier ou dossier existe, on ne touche pas
 RewriteCond %{REQUEST_FILENAME} !-f

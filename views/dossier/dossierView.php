@@ -220,7 +220,7 @@ require('views/template/navbar.php');
                 </div>
             `;
 
-            fetch('/FodjoManage/controller/Y_dossierController.php?action=getDetails&id=' + idDossier +'&H_idEmploye=<?= $_SESSION['H_idEmploye'] ?>')
+            fetch('/land_solution/controller/Y_dossierController.php?action=getDetails&id=' + idDossier +'&H_idEmploye=<?= $_SESSION['H_idEmploye'] ?>')
                 .then(response => response.text())
                 .then(html => {
                     modalContent.innerHTML = html;
@@ -250,7 +250,7 @@ require('views/template/navbar.php');
                 H_idEmploye: '<?= $_SESSION['H_idEmploye'] ?>'
             });
 
-            fetch('/FodjoManage/controller/Y_dossierController.php?' + params.toString())
+            fetch('/land_solution/controller/Y_dossierController.php?' + params.toString())
                 .then(response => response.text())
                 .then(html => {
                     modalContent.innerHTML = html;

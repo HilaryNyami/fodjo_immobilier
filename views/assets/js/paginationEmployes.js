@@ -32,7 +32,7 @@ function buildEncodedLink(page, params = {}) {
             .replace(/\//g, '_')
             .replace(/=+$/, '');
     }
-    return `/FodjoManage/${page}/${encodedParams}`;
+    return `/land_solution/${page}/${encodedParams}`;
 }
 
 // Fonction pour rendre les éléments de la page actuelle
@@ -282,7 +282,7 @@ window.onload = function() {
         }
 
         // --- NOUVELLE LOGIQUE : Mettre à jour l'action du formulaire AVEC l'ID de l'employé ---
-        //const baseUrl = 'FodjoManage/H_updateEmploye/'; // L'URL de base pour le contrôleur
+        //const baseUrl = 'land_solution/H_updateEmploye/'; // L'URL de base pour le contrôleur
         const params = {
             H_idEmploye: H_idEmployeFromSession, // ID de l'employé connecté depuis la session PHP
             H_idEmployeUpdate: employeeData.idEmploye, // L'ID de l'employé à mettre à jour est déjà dans H_idEmployeUpdate (champ caché) et doit aller dans l'URL

@@ -190,7 +190,7 @@ require('views/template/navbar.php');
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="<?= contructUrl('H_prospect' , ['H_idEmploye'=>$_SESSION['H_idEmploye']]) ?>" action="/FodjoManage/<?= encodeUrl(['page'=>'H_prospect' , 'H_idEmploye'=>$_SESSION['H_idEmploye']])?>" id="descenteForm">
+                    <form method="post" action="<?= contructUrl('H_prospect' , ['H_idEmploye'=>$_SESSION['H_idEmploye']]) ?>" action="/land_solution/<?= encodeUrl(['page'=>'H_prospect' , 'H_idEmploye'=>$_SESSION['H_idEmploye']])?>" id="descenteForm">
                         <div class="mb-3">
                             <label class="form-label text-card-foreground font-medium">Nom de la descente *</label>
                             <input type="text" name="H_nomDescente" class="form-control bg-input border-border text-foreground" id="descenteName" required>

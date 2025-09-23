@@ -42,12 +42,12 @@ if(isset($_POST['connecter'])){
             $encodedParams = encodeUrl($params);
 
             // Construire l'URL
-            $url = "/FodjoManage/$page/$encodedParams";
+            $url = "/land_solution/$page/$encodedParams";
 
             header('Location:'. $url);
             exit;
         // else
-        //     header('Location:http://localhost/FodjoManage/controllers/H_dashboardClassicController.php?H_idEmploye='.$_SESSION['H_idEmploye'].'');
+        //     header('Location:http://localhost/land_solution/controllers/H_dashboardClassicController.php?H_idEmploye='.$_SESSION['H_idEmploye'].'');
     }
 }
 

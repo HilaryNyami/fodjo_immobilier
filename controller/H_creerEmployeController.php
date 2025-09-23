@@ -74,7 +74,7 @@
                                                             $H_tableauErreurs[] = 'Nouvel Employe enregistré avec success!!!';
 
                                                             header('Location:'.contructUrl('H_employes' , ['H_idEmploye'=>$_SESSION['H_idEmploye']]));
-                                                           // header('Location:/FodjoManage/'.encodeUrl(['page'=>'H_employes' , 'H_idEmploye'=>$H_idEmploye]));
+                                                           // header('Location:/land_solution/'.encodeUrl(['page'=>'H_employes' , 'H_idEmploye'=>$H_idEmploye]));
                                                         
                                                     }
                                                     else

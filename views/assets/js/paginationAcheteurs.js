@@ -21,7 +21,7 @@ function buildEncodedLink(page, params = {}) {
             .replace(/\//g, '_')
             .replace(/=+$/, '');
     }
-    return `/FodjoManage/${page}/${encodedParams}`;
+    return `/land_solution/${page}/${encodedParams}`;
 }
 
 

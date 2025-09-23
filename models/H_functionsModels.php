@@ -477,7 +477,7 @@
             if (!empty($params)) {
                 $encodedParams = encodeUrl($params);
             }
-            return "/FodjoManage/$page/$encodedParams";
+            return "/land_solution/$page/$encodedParams";
         }
     }
 

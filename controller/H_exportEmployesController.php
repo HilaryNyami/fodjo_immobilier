@@ -6,7 +6,7 @@
     $H_dbConnect = F_databaseConnection("localhost", "fodjomanage", "root", "");
 
     // Appel du fichier des fonctions du modèle
-    require("models/H_functionsModels.php");
+    // require("models/H_functionsModels.php");
 
     // Inclure la bibliothèque FPDF
     require('models/pdf/fpdf.php');
@@ -43,7 +43,7 @@
         $pdf = new PDF();
         $pdf->AddPage();
         $pdf->SetMargins(15, 15, 15);
-        $pdf->SetFont('Poppins', '', 12);
+        $pdf->SetFont('times', '', 12);
 
         // Récupérer la date du jour
         $date = date('d/m/Y');
@@ -53,7 +53,7 @@
         $pdf->Ln(10);
 
         // Titre du document
-        $pdf->SetFont('Poppins', 'B', 16);
+        $pdf->SetFont('times', 'B', 16);
         $pdf->Cell(0, 10, 'LISTE DES EMPLOYES', 0, 1, 'C');
 
         // Espacement après le titre
@@ -62,10 +62,10 @@
         // Définir les en-têtes du tableau
         $header = ['Numero', 'Noms et prenoms', 'Poste', 'Telephone', 'Email'];
         // Définir les largeurs des colonnes (en mm)
-        $width_cell = [20, 70, 40, 30, 60]; 
+        $width_cell = [15, 65, 35, 25, 50]; 
 
         // Dessiner le tableau
-        $pdf->SetFont('Poppins', 'B', 10);
+        $pdf->SetFont('times', 'B', 10);
         for ($i = 0; $i < count($header); $i++) {
             $pdf->Cell($width_cell[$i], 7, $header[$i], 1, 0, 'C');
         }
@@ -76,14 +76,14 @@
        
 
         // Remplir le tableau avec les données
-        $pdf->SetFont('Poppins', '', 10);
+        $pdf->SetFont('times', '', 10);
         $counter = 1;
         foreach ($H_allEmployes as $row) {
             $pdf->Cell($width_cell[0], 6, $counter++, 1, 0, 'C');
             $pdf->Cell($width_cell[1], 6, utf8_decode($row->nomEmploye), 1, 0, 'L');
-            $pdf->Cell($width_cell[2], 6, utf8_decode($row->libelleFonction), 1, 0, 'L');
-            $pdf->Cell($width_cell[3], 6, $row->telephoneEmploye, 1, 0, 'L');
-            $pdf->Cell($width_cell[4], 6, $row->emailEmploye, 1, 0, 'L');
+            $pdf->Cell($width_cell[2], 6, utf8_decode($row->libelleFonction), 1, 0, 'C');
+            $pdf->Cell($width_cell[3], 6, $row->telephoneEmploye, 1, 0, 'C');
+            $pdf->Cell($width_cell[4], 6, $row->emailEmploye, 1, 0, 'C');
             $pdf->Ln();
         }
 
